@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &185027692
+--- !u!1 &108081171
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,104 +131,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 185027694}
-  - component: {fileID: 185027693}
-  - component: {fileID: 185027697}
-  - component: {fileID: 185027696}
-  - component: {fileID: 185027695}
-  - component: {fileID: 185027698}
+  - component: {fileID: 108081172}
+  - component: {fileID: 108081173}
   m_Layer: 0
-  m_Name: Pipeline
+  m_Name: Pipeline Runner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &185027693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185027692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46b9e3ed7a4465d4a83f14e20a165b29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Steps:
-  - {fileID: 185027697}
-  - {fileID: 185027696}
-  - {fileID: 185027695}
-  - {fileID: 185027698}
---- !u!4 &185027694
+--- !u!4 &108081172
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185027692}
+  m_GameObject: {fileID: 108081171}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &185027695
+--- !u!114 &108081173
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185027692}
+  m_GameObject: {fileID: 108081171}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 667b97aa267790248928f1fb09535ecc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Parameters:
-    Type: 0
-    Message: Hello from first Pipeline!
---- !u!114 &185027696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185027692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66475ad548526f04c97691c9b2c9bae2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WaitTime: 1
---- !u!114 &185027697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185027692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9189c6fa05e470f46a5219b25fd4a97c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Boolean: 1
---- !u!114 &185027698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185027692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bafb13ac6f0ec26498df1437cb4a6b91, type: 3}
+  m_Script: {fileID: 11500000, guid: 9a350881d2541594ebb8daf43752a034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Pipeline: {fileID: 609065456}
+  AutoRun: 0
+  AbortOnFail: 0
 --- !u!1 &231555689
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +233,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &340928722
 GameObject:
@@ -390,7 +330,7 @@ RectTransform:
   - {fileID: 1367433638}
   - {fileID: 2092748661}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -482,12 +422,10 @@ GameObject:
   m_Component:
   - component: {fileID: 609065459}
   - component: {fileID: 609065458}
-  - component: {fileID: 609065460}
   - component: {fileID: 609065457}
-  - component: {fileID: 609065461}
-  - component: {fileID: 609065462}
+  - component: {fileID: 609065460}
   m_Layer: 0
-  m_Name: Pipeline (1)
+  m_Name: Pipeline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -502,12 +440,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 609065456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 667b97aa267790248928f1fb09535ecc, type: 3}
+  m_Script: {fileID: 11500000, guid: c8f10d8afae931a49a4195f38d7412ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Parameters:
-    Type: 0
-    Message: Hello from second Pipeline!
+  Pipeline: {fileID: 11400000, guid: 7d5108a5a4635744f9e4182d91a98d95, type: 2}
 --- !u!114 &609065458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,10 +457,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Steps:
-  - {fileID: 609065460}
   - {fileID: 609065457}
-  - {fileID: 609065461}
-  - {fileID: 609065462}
+  - {fileID: 609065460}
 --- !u!4 &609065459
 Transform:
   m_ObjectHideFlags: 0
@@ -537,7 +471,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &609065460
 MonoBehaviour:
@@ -548,36 +482,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 609065456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66475ad548526f04c97691c9b2c9bae2, type: 3}
+  m_Script: {fileID: 11500000, guid: e1c20c4cc993e9045b8db76dddfb0dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WaitTime: 1
---- !u!114 &609065461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 609065456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9189c6fa05e470f46a5219b25fd4a97c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Boolean: 1
---- !u!114 &609065462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 609065456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03f896deaa925ed4d890b4f2b4640866, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StepBehaviour: {fileID: 609065457}
+  StepObject: {fileID: 11400000, guid: ac3e5f6ae781db04993a75dd0121d45d, type: 2}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,52 +662,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1230784230
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1230784232}
-  - component: {fileID: 1230784231}
-  m_Layer: 0
-  m_Name: Pipeline Runner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1230784231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1230784230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a350881d2541594ebb8daf43752a034, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Pipeline: {fileID: 185027692}
-  AutoRun: 0
-  AbortOnFail: 1
---- !u!4 &1230784232
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1230784230}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1367433637
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +719,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Demo 1
+  m_text: Demo 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 786360cf7c1e40943aeeb2a931ccbb07, type: 2}
@@ -991,8 +853,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This is a demo that does stuff. You can see stuff being done by looking
-    at your screen.
+  m_text: Pipelines and Steps can also be Scriptable Objects. Benefit of this is
+    that you can easily reuse Steps and whole Pipelines.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}

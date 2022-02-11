@@ -11,11 +11,11 @@ namespace Sokka06.Pipeliner
         private Button _runButton;
         private Button _abortButton;
 
-        private readonly Pipeliner _pipeliner;
+        private readonly PipelineRunner _pipelineRunner;
 
-        public ControlsElement(Pipeliner pipeliner)
+        public ControlsElement(PipelineRunner pipelineRunner)
         {
-            _pipeliner = pipeliner;
+            _pipelineRunner = pipelineRunner;
 
             _runButton = new Button(OnRunButtonClicked)
             {
@@ -32,7 +32,7 @@ namespace Sokka06.Pipeliner
 
         public void UpdateElement()
         {
-            if (_pipeliner.Runner == null)
+            if (_pipelineRunner.Data == null)
             {
                 _runButton.SetEnabled(false);
                 _abortButton.SetEnabled(false);
@@ -48,7 +48,7 @@ namespace Sokka06.Pipeliner
         private void OnRunButtonClicked()
         {
             Debug.Log("Run Button Clicked");
-            _pipeliner.StartCoroutine(_pipeliner.Run(result =>
+            _pipelineRunner.StartCoroutine(_pipelineRunner.Run(result =>
             {
                 Debug.Log("Pipeline ran from Editor. " + result);
             }));
@@ -56,10 +56,11 @@ namespace Sokka06.Pipeliner
         
         private void OnAbortButtonClicked()
         {
-            if (!(_pipeliner.Runner.State.CurrentState is IPipelineState.Running))
-                return;
+            //if (!(_pipelineRunner.State.CurrentState is IPipelineState.Running))
+            //    return;
             
             Debug.Log("Abort Button Clicked");
+            _pipelineRunner.Abort();
         }
     }
     
@@ -72,11 +73,11 @@ namespace Sokka06.Pipeliner
         private Label _stateLabel;
         private Label _progressLabel;
 
-        private readonly Pipeliner Pipeliner;
+        private readonly PipelineRunner _pipelineRunner;
 
-        public InfoElement(Pipeliner pipeliner)
+        public InfoElement(PipelineRunner pipelineRunner)
         {
-            Pipeliner = pipeliner;
+            _pipelineRunner = pipelineRunner;
             
             _foldout = new Foldout
             {
@@ -102,7 +103,7 @@ namespace Sokka06.Pipeliner
             if (!_foldout.visible)
                 return;
             
-            if (Pipeliner.Runner == null)
+            if (_pipelineRunner.Data == null)
             {
                 _helpBox.text = "Run the pipeline to display useful information here.";
                 _helpBox.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
@@ -111,24 +112,65 @@ namespace Sokka06.Pipeliner
             
             _helpBox.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
             
-            _stepsLabel.text = $"Step Count: {(Pipeliner.Runner.Steps.Length.ToString())}";
-            _stateLabel.text = $"State: {(Pipeliner.Runner.State.CurrentState.GetType().Name)}";
-            _progressLabel.text = $"Progress: {(Pipeliner.Runner.Progress.ToString("P"))} ({(Pipeliner.Runner.StepIndex + 1).ToString()}/{Pipeliner.Runner.Steps.Length})";
+            _stepsLabel.text = $"Step Count: {(_pipelineRunner.Steps.Length.ToString())}";
+            _stateLabel.text = $"State: {(_pipelineRunner.State.CurrentState.GetType().Name)}";
+            _progressLabel.text = $"Progress: {(_pipelineRunner.Progress.ToString("P"))} ({(_pipelineRunner.StepIndex + 1).ToString()}/{_pipelineRunner.Steps.Length})";
         }
     }
     
-    [CustomEditor(typeof(Pipeliner))]
-    public class PipelinerEditor : Editor
+    public class LogElement : VisualElement
     {
-        private Pipeliner _target;
+        private Foldout _foldout;
+        private HelpBox _logBox;
+
+        private readonly PipelineRunner _pipelineRunner;
+
+        public LogElement(PipelineRunner pipelineRunner)
+        {
+            _pipelineRunner = pipelineRunner;
+            
+            _foldout = new Foldout
+            {
+                text = "Log"
+            };
+            Add(_foldout);
+
+            _logBox = new HelpBox
+            {
+                messageType = HelpBoxMessageType.None
+            };
+            _foldout.Add(_logBox);
+        }
+
+        public void UpdateElement()
+        {
+            if (!_foldout.visible)
+                return;
+            
+            if (_pipelineRunner.Logger == null)
+            {
+                _logBox.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+                return;
+            }
+            
+            _logBox.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+            _logBox.text = _pipelineRunner.Logger.Logs.ToString();
+        }
+    }
+    
+    [CustomEditor(typeof(PipelineRunner))]
+    public class PipelineRunnerEditor : Editor
+    {
+        private PipelineRunner _target;
         private VisualElement _root;
 
         private ControlsElement _controlsElement;
-        private InfoElement _infoContainer;
+        private InfoElement _infoElement;
+        private LogElement _logElement;
         
         public virtual void OnEnable()
         {
-            _target = (Pipeliner)target;
+            _target = (PipelineRunner)target;
             _root = new VisualElement();
             
             EditorApplication.update += UpdateInspector;
@@ -142,7 +184,8 @@ namespace Sokka06.Pipeliner
         private void UpdateInspector()
         {
             _controlsElement?.UpdateElement();
-            _infoContainer?.UpdateElement();
+            _infoElement?.UpdateElement();
+            _logElement?.UpdateElement();
         }
         
         public override VisualElement CreateInspectorGUI()
@@ -180,6 +223,9 @@ namespace Sokka06.Pipeliner
             // Add Info
             container.Add(CreateInfo());
             
+            // Add Log
+            container.Add(CreateLog());
+            
             return container;
         }
         
@@ -191,8 +237,14 @@ namespace Sokka06.Pipeliner
 
         private VisualElement CreateInfo()
         {
-            _infoContainer = new InfoElement(_target);
-            return _infoContainer;
+            _infoElement = new InfoElement(_target);
+            return _infoElement;
+        }
+        
+        private VisualElement CreateLog()
+        {
+            _logElement = new LogElement(_target);
+            return _logElement;
         }
     }
 }

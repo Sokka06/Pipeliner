@@ -8,30 +8,60 @@ namespace Sokka06.Pipeliner
 {
     public interface IPipelineResult
     {
-        List<(IPipelineStep step, IStepResult result)> StepResults { get; }
-    
+        List<(IStep step, IStepResult result)> StepResults { get; }
+
+        public struct Default : IPipelineResult
+        {
+            public List<(IStep step, IStepResult result)> StepResults { get; }
+        }
+        
         public struct Success : IPipelineResult
         {
-            public List<(IPipelineStep step, IStepResult result)> StepResults { get; private set; }
+            public List<(IStep step, IStepResult result)> StepResults { get; private set; }
 
-            public Success(List<(IPipelineStep step, IStepResult result)> stepResults)
+            public Success(List<(IStep step, IStepResult result)> stepResults)
             {
                 StepResults = stepResults;
             }
         }
+        
         public struct Failed : IPipelineResult
         {
-            public List<(IPipelineStep step, IStepResult result)> StepResults { get; private set; }
+            public List<(IStep step, IStepResult result)> StepResults { get; private set; }
             
-            public Failed(List<(IPipelineStep step, IStepResult result)> stepResults)
+            public Failed(List<(IStep step, IStepResult result)> stepResults)
+            {
+                StepResults = stepResults;
+            }
+        }
+        
+        public struct Aborted : IPipelineResult
+        {
+            public List<(IStep step, IStepResult result)> StepResults { get; private set; }
+            
+            public Aborted(List<(IStep step, IStepResult result)> stepResults)
             {
                 StepResults = stepResults;
             }
         }
     }
 
+    /// <summary>
+    /// A pipeline holds all steps...
+    /// </summary>
     public interface IPipeline
     {
-        IEnumerator Run(Action<IPipelineResult> result);
+        /// <summary>
+        /// Creates a Pipeline from steps.
+        /// </summary>
+        /// <returns></returns>
+        IStep[] Create(PipelineRunner runner);
+        
+        /*/// <summary>
+        /// Runs Pipeline's steps.
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        IEnumerator Run(Action<IPipelineResult> result);*/
     }
 }

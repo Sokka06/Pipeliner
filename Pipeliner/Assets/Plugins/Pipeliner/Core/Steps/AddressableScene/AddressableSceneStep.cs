@@ -23,28 +23,40 @@ namespace Sokka06.Pipeliner
             Asset = asset;
         }
     }
-    
-    public class AddressableSceneStep : AbstractStepBehaviour
+
+    [Serializable]
+    public struct AddressableSceneParameters : IStepParameters
     {
         public List<AddressableScene> Scenes;
-
+    }
+    
+    public class AddressableSceneStep : AbstractStep
+    {
+        public AddressableSceneStep(PipelineRunner runner, IStepParameters parameters) : base(runner, parameters)
+        {
+        }
+        
         public override IEnumerator Run(Action<IStepResult> result)
         {
             yield return base.Run(result);
 
-            for (int i = 0; i < Scenes.Count; i++)
+            var parameters = (AddressableSceneParameters)Parameters;
+
+            for (int i = 0; i < parameters.Scenes.Count; i++)
             {
-                if (!Scenes[i].Asset.RuntimeKeyIsValid())
+                if (!parameters.Scenes[i].Asset.RuntimeKeyIsValid())
                 {
                     Debug.Log("No Addressable Scene set.");
                     continue;
                 }
 
                 var handle = default(AsyncOperationHandle<SceneInstance>);
-                yield return handle = Scenes[i].Asset.LoadSceneAsync(Scenes[i].LoadSceneMode);
+                yield return handle = parameters.Scenes[i].Asset.LoadSceneAsync(parameters.Scenes[i].LoadSceneMode);
                 
-                if(Scenes[i].SetActive)
+                if(parameters.Scenes[i].SetActive)
                     SceneManager.SetActiveScene(handle.Result.Scene);
+
+                Progress.Value = 1f;
             }
         }
     }

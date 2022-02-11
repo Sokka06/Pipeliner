@@ -5,19 +5,16 @@ using UnityEngine;
 
 namespace Sokka06.Pipeliner
 {
-    public class BoolStep : AbstractStepBehaviour
+    public class BehaviourStep : AbstractStep
     {
-        public bool Boolean;
+        public BehaviourStep(PipelineRunner runner, IStepParameters parameters) : base(runner, parameters)
+        {
+        }
+
         public override IEnumerator Run(Action<IStepResult> result)
         {
             yield return base.Run(result);
-            
-            if (!Boolean)
-            {
-                result?.Invoke(new IStepResult.Failed());
-            }
-            
-            SetProgress(1f);
+            Progress.Value = 1f;
         }
     }
 }
