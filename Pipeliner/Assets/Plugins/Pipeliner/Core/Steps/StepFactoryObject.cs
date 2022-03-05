@@ -8,7 +8,7 @@ namespace Sokka06.Pipeliner
     /// <summary>
     /// A base class for Scriptable Object step handlers.
     /// </summary>
-    public abstract class StepHandlerObject : ScriptableObject, IStepHandler
+    public abstract class StepFactoryObject : ScriptableObject, IStepFactory
     {
         protected const string MENU_PATH = "Pipeliner/Steps/";
         

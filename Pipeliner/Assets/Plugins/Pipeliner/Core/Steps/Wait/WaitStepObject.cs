@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Sokka06.Pipeliner
 {
     [CreateAssetMenu(fileName = "Wait Step", menuName = MENU_PATH + "Wait")]
-    public class WaitStepObject : StepHandlerObject
+    public class WaitStepObject : StepFactoryObject
     {
         public float WaitTime = 1f;
         

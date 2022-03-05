@@ -5,10 +5,7 @@ using UnityEngine;
 
 namespace Sokka06.Pipeliner
 {
-    public interface IStepParameters
-    {
-        
-    }
+    public interface IStepParameters { }
     
     public interface IStep
     {

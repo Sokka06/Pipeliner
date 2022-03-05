@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Sokka06.Pipeliner
 {
     [AddComponentMenu(MENU_PATH + "Debugging/Debug Log Step")]
-    public class DebugLogStepHandler : StepHandlerBehaviour
+    public class DebugLogStepBehaviour : StepFactoryBehaviour
     {
         public DebugLogParameters Parameters;
     

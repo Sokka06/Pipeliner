@@ -8,9 +8,9 @@ namespace Sokka06.Pipeliner
     /// Runs a Step from given Behaviour.
     /// </summary>
     [AddComponentMenu(MENU_PATH + "Behaviour Step")]
-    public class BehaviourStepHandler : StepHandlerBehaviour
+    public class BehaviourStepBehaviour : StepFactoryBehaviour
     {
-        public StepHandlerBehaviour StepBehaviour;
+        public StepFactoryBehaviour StepBehaviour;
         
         public override IStep[] Create(PipelineRunner runner)
         {

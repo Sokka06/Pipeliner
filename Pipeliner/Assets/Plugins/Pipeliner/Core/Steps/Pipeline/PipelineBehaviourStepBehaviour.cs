@@ -8,7 +8,7 @@ namespace Sokka06.Pipeliner
     /// Runs a Pipeline from a Pipeline Behaviour.
     /// </summary>
     [AddComponentMenu(MENU_PATH + "Pipeline Behaviour Step")]
-    public class PipelineBehaviourStepHandler : StepHandlerBehaviour
+    public class PipelineBehaviourStepBehaviour : StepFactoryBehaviour
     {
         public PipelineBehaviour Pipeline;
         

@@ -6,9 +6,9 @@ using UnityEngine;
 namespace Sokka06.Pipeliner
 {
     /// <summary>
-    /// A base class for MonoBehaviour step handlers.
+    /// A base class for MonoBehaviour Step factories.
     /// </summary>
-    public abstract class StepHandlerBehaviour : MonoBehaviour, IStepHandler
+    public abstract class StepFactoryBehaviour : MonoBehaviour, IStepFactory
     {
         protected const string MENU_PATH = "Pipeliner/Steps/";
         

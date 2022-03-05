@@ -11,7 +11,7 @@ namespace Sokka06.Pipeliner
     /// Runs a Pipeline from a MonoBehaviour or Scriptable Object.
     /// </summary>
     [AddComponentMenu(MENU_PATH + "Pipeline Step")]
-    public class PipelineStepHandler : StepHandlerBehaviour
+    public class PipelineStepBehaviour : StepFactoryBehaviour
     {
         public Object Pipeline;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Sokka06.Pipeliner
 {
     [CreateAssetMenu(fileName = "Debug Log Step", menuName = "Pipeliner/Steps/Debug Log")]
-    public class DebugLogStepObject : StepHandlerObject
+    public class DebugLogStepObject : StepFactoryObject
     {
         public DebugLogParameters Parameters;
         

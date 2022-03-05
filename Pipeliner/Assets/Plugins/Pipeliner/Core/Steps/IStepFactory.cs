@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sokka06.Pipeliner;
 using UnityEngine;
 
-public interface IStepHandler
+public interface IStepFactory
 {
     // Creates an instance of step.
     IStep[] Create(PipelineRunner runner);

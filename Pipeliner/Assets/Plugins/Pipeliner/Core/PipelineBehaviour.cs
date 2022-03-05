@@ -11,25 +11,11 @@ namespace Sokka06.Pipeliner
     [AddComponentMenu("Pipeliner/Pipeline")]
     public class PipelineBehaviour : MonoBehaviour, IPipeline
     {
-        public List<StepHandlerBehaviour> Steps;
+        public List<StepFactoryBehaviour> Steps;
 
-        /*protected virtual void Awake()
+        public virtual StepFactoryBehaviour[] FindSteps()
         {
-            SetupSteps();
-        }
-
-        public virtual void SetupSteps()
-        {
-            //Steps = new List<IStepHandler>(FindSteps());
-            for (int i = 0; i < Steps.Count; i++)
-            {
-                //Steps[i].Setup(this);
-            }
-        }*/
-        
-        public virtual StepHandlerBehaviour[] FindSteps()
-        {
-            return GetComponents<StepHandlerBehaviour>();
+            return GetComponents<StepFactoryBehaviour>();
         }
 
         public virtual IStep[] Create(PipelineRunner runner)
@@ -41,18 +27,5 @@ namespace Sokka06.Pipeliner
             }
             return steps.ToArray();
         }
-
-        /*public virtual IEnumerator Run(Action<IPipelineResult> result = null)
-        {
-            // TODO: Experiment with different casts.
-            var steps = new IStep[Steps.Count];
-            for (int i = 0; i < Steps.Count; i++)
-            {
-                steps[i] = Steps[i].Create();
-
-                var stepResult = default(IStepResult);
-                yield return steps[i].Run(value => stepResult = value);
-            }
-        }*/
     }
 }

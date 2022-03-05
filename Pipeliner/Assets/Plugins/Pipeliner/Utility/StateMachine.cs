@@ -8,10 +8,7 @@ namespace Sokka06.Pipeliner
     /// <summary>
     /// A simple state interface for state machine.
     /// </summary>
-    public interface IState
-    {
-        
-    }
+    public interface IState { }
     
     /// <summary>
     /// A simple state machine.

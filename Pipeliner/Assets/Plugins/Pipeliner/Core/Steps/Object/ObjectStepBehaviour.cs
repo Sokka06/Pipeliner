@@ -9,9 +9,9 @@ namespace Sokka06.Pipeliner
     /// Runs a step from given Scriptable Object.
     /// </summary>
     [AddComponentMenu(MENU_PATH + "Object Step")]
-    public class ObjectStepHandler : StepHandlerBehaviour
+    public class ObjectStepBehaviour : StepFactoryBehaviour
     {
-        public StepHandlerObject StepObject;
+        public StepFactoryObject StepObject;
 
         public override IStep[] Create(PipelineRunner runner)
         {

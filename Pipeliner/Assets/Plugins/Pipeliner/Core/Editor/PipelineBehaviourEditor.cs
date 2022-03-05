@@ -56,7 +56,7 @@ namespace Sokka06.Pipeliner
 
             var button = new Button(() =>
             {
-                _target.Steps = new List<StepHandlerBehaviour>(_target.FindSteps());
+                _target.Steps = new List<StepFactoryBehaviour>(_target.FindSteps());
                 EditorUtility.SetDirty(target);
             })
             {
