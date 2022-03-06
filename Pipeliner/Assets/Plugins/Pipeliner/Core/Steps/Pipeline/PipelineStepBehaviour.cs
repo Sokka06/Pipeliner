@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Sokka06.Pipeliner;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -19,7 +18,7 @@ namespace Sokka06.Pipeliner
         {
             if (Pipeline != null)
             {
-                var pipeline = FindPipeline(Pipeline);
+                var pipeline = Utils.FindPipeline(Pipeline);
 
                 if (pipeline == null)
                 {
@@ -31,7 +30,7 @@ namespace Sokka06.Pipeliner
 
         public override IStep[] Create(PipelineRunner runner)
         {
-            var pipeline = FindPipeline(Pipeline);
+            var pipeline = Utils.FindPipeline(Pipeline);
 
             if (pipeline == null)
                 return new IStep[]{new AbstractStep(runner, default)};
@@ -40,26 +39,6 @@ namespace Sokka06.Pipeliner
             steps.AddRange(pipeline.Create(runner));
             return steps.ToArray();
         }
-
-        /// <summary>
-        /// Tries to find Pipeline from given object.
-        /// </summary>
-        /// <returns></returns>
-        private IPipeline FindPipeline(Object o)
-        {
-            // Try to cast Scriptable Object to Pipeline.
-            var pipeline = Pipeline as IPipeline;
-            
-            // Cast failed, try to find Pipeline from a GameObject.
-            if (pipeline == null)
-            {
-                if (Pipeline is GameObject go)
-                {
-                    pipeline = go.GetComponent<IPipeline>();
-                }
-            }
-
-            return pipeline;
-        }
+        
     }
 }
