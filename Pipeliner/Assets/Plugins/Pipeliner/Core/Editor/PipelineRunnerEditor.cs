@@ -122,6 +122,7 @@ namespace Sokka06.Pipeliner
     {
         private Foldout _foldout;
         private HelpBox _logBox;
+        private Button _clearButton;
 
         private readonly PipelineRunner _pipelineRunner;
 
@@ -140,6 +141,12 @@ namespace Sokka06.Pipeliner
                 messageType = HelpBoxMessageType.None
             };
             _foldout.Add(_logBox);
+
+            _clearButton = new Button(OnClearButtonClicked)
+            {
+                text = "Clear"
+            };
+            _foldout.Add(_clearButton);
         }
 
         public void UpdateElement()
@@ -149,12 +156,22 @@ namespace Sokka06.Pipeliner
             
             if (_pipelineRunner.Logger == null)
             {
-                _logBox.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+                var hidden = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+                _logBox.style.display = hidden;
+                _clearButton.style.display = hidden;
                 return;
             }
+
+            var visible = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+            _logBox.style.display = visible;
+            _clearButton.style.display = visible;
             
-            _logBox.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
             _logBox.text = _pipelineRunner.Logger.Logs.ToString();
+        }
+
+        private void OnClearButtonClicked()
+        {
+            _pipelineRunner.Logger.Clear();
         }
     }
     
