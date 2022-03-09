@@ -12,10 +12,11 @@ namespace Sokka06.Pipeliner
     {
         public PipelineObject Pipeline;
         
-        public override IStep[] Create(PipelineRunner runner)
+        public override IStep[] Create()
         {
-            var steps = new List<IStep> { new PipelineStep(runner, new PipelineStepParameters {Pipeline = Pipeline}) };
-            steps.AddRange(Pipeline.Create(runner));
+            var pipeline = Pipeline.Create();
+            var steps = new List<IStep> { new PipelineStep(new PipelineStepParameters {Pipeline = pipeline}) };
+            steps.AddRange(pipeline.Steps);
             return steps.ToArray();
         }
     }

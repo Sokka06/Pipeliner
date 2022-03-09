@@ -21,7 +21,7 @@ namespace Sokka06.Pipeliner
     /// </summary>
     public class WaitStep : AbstractStep
     {
-        public WaitStep(PipelineRunner runner, IStepParameters parameters) : base(runner, parameters)
+        public WaitStep(IStepParameters parameters) : base(parameters)
         {
         }
         

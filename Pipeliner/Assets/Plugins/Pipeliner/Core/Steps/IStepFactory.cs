@@ -6,5 +6,5 @@ using UnityEngine;
 public interface IStepFactory
 {
     // Creates an instance of step.
-    IStep[] Create(PipelineRunner runner);
+    IStep[] Create();
 }

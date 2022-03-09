@@ -10,9 +10,9 @@ namespace Sokka06.Pipeliner
         [Tooltip("Fails this step if false.")]
         public bool Boolean = true;
     
-        public override IStep[] Create(PipelineRunner runner)
+        public override IStep[] Create()
         {
-            return new IStep[] {new BoolStep(runner, new BoolStepParameters{Boolean = Boolean})};
+            return new IStep[] {new BoolStep(new BoolStepParameters{Boolean = Boolean})};
         }
     }
 }

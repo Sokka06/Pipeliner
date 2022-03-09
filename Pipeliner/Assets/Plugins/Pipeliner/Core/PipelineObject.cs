@@ -9,18 +9,18 @@ namespace Sokka06.Pipeliner
     /// A Scriptable Object based Pipeline. Steps should be added to the Steps list.
     /// </summary>
     [CreateAssetMenu(fileName = "Pipeline", menuName = "Pipeliner/Pipeline", order = -1)]
-    public class PipelineObject : ScriptableObject, IPipeline
+    public class PipelineObject : ScriptableObject, IPipelineFactory
     {
         public List<StepFactoryObject> Steps;
 
-        public virtual IStep[] Create(PipelineRunner runner)
+        public virtual Pipeline Create()
         {
             var steps = new List<IStep>();
             for (int i = 0; i < Steps.Count; i++)
             {
-                steps.AddRange(Steps[i].Create(runner));
+                steps.AddRange(Steps[i].Create());
             }
-            return steps.ToArray();
+            return new Pipeline(steps.ToArray());
         }
     }
 }

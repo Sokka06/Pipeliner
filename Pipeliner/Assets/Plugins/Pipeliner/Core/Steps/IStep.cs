@@ -9,7 +9,6 @@ namespace Sokka06.Pipeliner
     
     public interface IStep
     {
-        PipelineRunner Runner { get; }
         IStepParameters Parameters { get; }
         EventValue<float> Progress { get; }
 
@@ -24,5 +23,12 @@ namespace Sokka06.Pipeliner
         public struct Success : IStepResult { }
         public struct Failed : IStepResult { }
         public struct Aborted : IStepResult {}
+    }
+    
+    public interface IStepState
+    {
+        public struct Pending : IStepState { }
+        public struct Running : IStepState { }
+        public struct Idle : IStepState { }
     }
 }

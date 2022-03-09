@@ -422,8 +422,9 @@ GameObject:
   m_Component:
   - component: {fileID: 609065459}
   - component: {fileID: 609065458}
-  - component: {fileID: 609065457}
+  - component: {fileID: 609065461}
   - component: {fileID: 609065460}
+  - component: {fileID: 609065457}
   m_Layer: 0
   m_Name: Pipeline
   m_TagString: Untagged
@@ -457,8 +458,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Steps:
-  - {fileID: 609065457}
+  - {fileID: 609065461}
   - {fileID: 609065460}
+  - {fileID: 609065457}
 --- !u!4 &609065459
 Transform:
   m_ObjectHideFlags: 0
@@ -485,7 +487,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1c20c4cc993e9045b8db76dddfb0dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StepObject: {fileID: 11400000, guid: ac3e5f6ae781db04993a75dd0121d45d, type: 2}
+  StepObject: {fileID: 11400000, guid: 643c14ec8c3e59a4a918184cbe310cf4, type: 2}
+--- !u!114 &609065461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609065456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 667b97aa267790248928f1fb09535ecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parameters:
+    Type: 0
+    Message: Hello from GameObject!
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

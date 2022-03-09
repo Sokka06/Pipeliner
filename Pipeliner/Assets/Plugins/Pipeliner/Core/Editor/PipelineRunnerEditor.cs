@@ -47,11 +47,7 @@ namespace Sokka06.Pipeliner
 
         private void OnRunButtonClicked()
         {
-            Debug.Log("Run Button Clicked");
-            _pipelineRunner.StartCoroutine(_pipelineRunner.Run(result =>
-            {
-                Debug.Log("Pipeline ran from Editor. " + result);
-            }));
+            _pipelineRunner.StartCoroutine(_pipelineRunner.Run());
         }
         
         private void OnAbortButtonClicked()
@@ -112,9 +108,9 @@ namespace Sokka06.Pipeliner
             
             _helpBox.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
             
-            _stepsLabel.text = $"Step Count: {(_pipelineRunner.Steps.Length.ToString())}";
+            _stepsLabel.text = $"Step Count: {(_pipelineRunner.CurrentPipeline.Steps.Length.ToString())}";
             _stateLabel.text = $"State: {(_pipelineRunner.State.CurrentState.GetType().Name)}";
-            _progressLabel.text = $"Progress: {(_pipelineRunner.Progress.ToString("P"))} ({(_pipelineRunner.StepIndex + 1).ToString()}/{_pipelineRunner.Steps.Length})";
+            _progressLabel.text = $"Progress: {(_pipelineRunner.Progress.ToString("P"))} ({(_pipelineRunner.StepIndex + 1).ToString()}/{_pipelineRunner.CurrentPipeline.Steps.Length})";
         }
     }
     

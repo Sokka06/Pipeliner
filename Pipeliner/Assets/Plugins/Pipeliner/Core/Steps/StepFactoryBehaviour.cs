@@ -12,6 +12,6 @@ namespace Sokka06.Pipeliner
     {
         protected const string MENU_PATH = "Pipeliner/Steps/";
         
-        public abstract IStep[] Create(PipelineRunner runner);
+        public abstract IStep[] Create();
     }
 }

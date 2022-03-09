@@ -24,7 +24,7 @@ namespace Sokka06.Pipeliner
     /// </summary>
     public class DebugLogStep : AbstractStep
     {
-        public DebugLogStep(PipelineRunner runner, IStepParameters parameters) : base(runner, parameters)
+        public DebugLogStep(IStepParameters parameters) : base(parameters)
         {
         }
         

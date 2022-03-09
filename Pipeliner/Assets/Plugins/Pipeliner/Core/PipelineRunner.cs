@@ -21,7 +21,6 @@ namespace Sokka06.Pipeliner
     public class PipelineRunnerData
     {
         public IPipeline Pipeline;
-        public IStep[] Steps;
         public int StepIndex;
     }
 
@@ -43,7 +42,7 @@ namespace Sokka06.Pipeliner
         public StateMachine<IPipelineState> State { get; private set; }
         public PipelineRunnerData Data { get; private set; }
         
-        public IStep[] Steps { get; private set; }
+        public IPipeline CurrentPipeline { get; private set; }
         public IStep CurrentStep { get; private set; }
         public int StepIndex { get; private set; }
         
@@ -75,7 +74,7 @@ namespace Sokka06.Pipeliner
         private void Awake()
         {
             var pipeline = Utils.FindPipeline(Pipeline);
-            Steps = pipeline.Create(this);
+            CurrentPipeline = pipeline.Create();
             
             Progress = 0f;
             State = new StateMachine<IPipelineState>(new IPipelineState.Idle());
@@ -97,7 +96,7 @@ namespace Sokka06.Pipeliner
             }
         }
 
-        public virtual IEnumerator Run(Action<IPipelineResult> pipelineResult)
+        public virtual IEnumerator Run(Action<IPipelineResult> pipelineResult = default)
         {
             Logger.Log($"Running Pipeline: {Pipeline.name}...");
             
@@ -105,14 +104,14 @@ namespace Sokka06.Pipeliner
             Progress = 0f;
             
             var result = new IPipelineResult.Default() as IPipelineResult;
-            var stepResults = new List<(IStep step, IStepResult result)>(Steps.Length);
+            var stepResults = new List<(IStep step, IStepResult result)>(CurrentPipeline.Steps.Length);
             
-            for (int i = 0; i < Steps.Length; i++)
+            for (int i = 0; i < CurrentPipeline.Steps.Length; i++)
             {
                 var stepResult = default(IStepResult);
                 
                 StepIndex = i;
-                CurrentStep = Steps[StepIndex];
+                CurrentStep = CurrentPipeline.Steps[StepIndex];
                 
                 Logger.Log($"Running Step: {CurrentStep.GetType().Name}");
                 
@@ -169,14 +168,14 @@ namespace Sokka06.Pipeliner
         {
             Progress = 0f;
 
-            if (Steps.Length > 0)
+            if (CurrentPipeline.Steps.Length > 0)
             {
-                for (int i = 0; i < Steps.Length; i++)
+                for (int i = 0; i < CurrentPipeline.Steps.Length; i++)
                 {
-                    Progress += Steps[i].Progress.Value;
+                    Progress += CurrentPipeline.Steps[i].Progress.Value;
                 }
             
-                Progress /= Steps.Length;
+                Progress /= CurrentPipeline.Steps.Length;
             }
             
             //Debug.Log($"Progress Changed: {Progress}");

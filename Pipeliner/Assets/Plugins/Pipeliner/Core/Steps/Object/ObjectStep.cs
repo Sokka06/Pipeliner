@@ -12,7 +12,7 @@ namespace Sokka06.Pipeliner
     
     public class ObjectStep : AbstractStep
     {
-        public ObjectStep(PipelineRunner runner, IStepParameters parameters) : base(runner, parameters)
+        public ObjectStep(IStepParameters parameters) : base(parameters)
         {
         }
 

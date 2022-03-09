@@ -6,6 +6,7 @@ namespace Sokka06.Pipeliner
 {
     public class Pipeline : IPipeline
     {
+        public IStep[] Steps => _steps;
         private readonly IStep[] _steps;
 
         public Pipeline(IStep[] steps)
@@ -13,9 +14,15 @@ namespace Sokka06.Pipeliner
             _steps = steps;
         }
         
-        public IStep[] Create(PipelineRunner runner)
+        public T GetStep<T>() where T : AbstractStep
         {
-            return _steps;
+            for (int i = 0; i < _steps.Length; i++)
+            {
+                if (_steps[i] is T step)
+                    return step;
+            }
+
+            return null;
         }
     }
 }

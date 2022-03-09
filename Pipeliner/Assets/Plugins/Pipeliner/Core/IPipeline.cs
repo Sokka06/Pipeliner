@@ -51,17 +51,13 @@ namespace Sokka06.Pipeliner
     /// </summary>
     public interface IPipeline
     {
-        /// <summary>
-        /// Creates a Pipeline from steps.
-        /// </summary>
-        /// <returns></returns>
-        IStep[] Create(PipelineRunner runner);
+        IStep[] Steps { get; }
         
-        /*/// <summary>
-        /// Runs Pipeline's steps.
+        /// <summary>
+        /// Gets first Step for given type.
         /// </summary>
-        /// <param name="result"></param>
+        /// <typeparam name="T">Step type</typeparam>
         /// <returns></returns>
-        IEnumerator Run(Action<IPipelineResult> result);*/
+        T GetStep<T>() where T : AbstractStep;
     }
 }

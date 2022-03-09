@@ -16,7 +16,7 @@ namespace Sokka06.Pipeliner
     /// </summary>
     public class BoolStep : AbstractStep
     {
-        public BoolStep(PipelineRunner runner, IStepParameters parameters) : base(runner, parameters)
+        public BoolStep(IStepParameters parameters) : base(parameters)
         {
         }
         

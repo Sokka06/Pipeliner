@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Sokka06.Pipeliner
 {
     /// <summary>
-    /// A base class for Scriptable Object step handlers.
+    /// A base class for Scriptable Object step factories.
     /// </summary>
     public abstract class StepFactoryObject : ScriptableObject, IStepFactory
     {
         protected const string MENU_PATH = "Pipeliner/Steps/";
         
-        public abstract IStep[] Create(PipelineRunner runner);
+        public abstract IStep[] Create();
     }
 }

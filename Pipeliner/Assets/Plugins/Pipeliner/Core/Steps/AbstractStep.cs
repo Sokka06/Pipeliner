@@ -7,15 +7,13 @@ namespace Sokka06.Pipeliner
 {
     public class AbstractStep : IStep
     {
-        public PipelineRunner Runner { get; }
         public IStepParameters Parameters { get; }
         public EventValue<float> Progress { get; }
 
         protected bool _abortRequested;
 
-        public AbstractStep(PipelineRunner runner, IStepParameters parameters)
+        public AbstractStep(IStepParameters parameters)
         {
-            Runner = runner;
             Parameters = parameters;
             Progress = new EventValue<float>(0f);
         }

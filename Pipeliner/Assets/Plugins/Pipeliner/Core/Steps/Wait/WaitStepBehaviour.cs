@@ -9,9 +9,9 @@ namespace Sokka06.Pipeliner
     {
         public float WaitTime = 1f;
     
-        public override IStep[] Create(PipelineRunner runner)
+        public override IStep[] Create()
         {
-            return new IStep[] {new WaitStep(runner, new WaitParameters{WaitTime = WaitTime})};
+            return new IStep[] {new WaitStep(new WaitParameters{WaitTime = WaitTime})};
         }
     }
 }

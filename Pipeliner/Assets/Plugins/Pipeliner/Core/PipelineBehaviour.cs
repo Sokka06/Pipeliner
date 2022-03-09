@@ -9,7 +9,7 @@ namespace Sokka06.Pipeliner
     /// A MonoBehaviour based Pipeline. Steps should be added on the same GameObject as this script.
     /// </summary>
     [AddComponentMenu("Pipeliner/Pipeline")]
-    public class PipelineBehaviour : MonoBehaviour, IPipeline
+    public class PipelineBehaviour : MonoBehaviour, IPipelineFactory
     {
         public List<StepFactoryBehaviour> Steps;
 
@@ -18,14 +18,14 @@ namespace Sokka06.Pipeliner
             return GetComponents<StepFactoryBehaviour>();
         }
 
-        public virtual IStep[] Create(PipelineRunner runner)
+        public virtual Pipeline Create()
         {
             var steps = new List<IStep>();
             for (int i = 0; i < Steps.Count; i++)
             {
-                steps.AddRange(Steps[i].Create(runner));
+                steps.AddRange(Steps[i].Create());
             }
-            return steps.ToArray();
+            return new Pipeline(steps.ToArray());
         }
     }
 }

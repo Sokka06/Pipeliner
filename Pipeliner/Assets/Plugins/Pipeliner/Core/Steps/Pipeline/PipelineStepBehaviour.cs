@@ -28,15 +28,16 @@ namespace Sokka06.Pipeliner
             }
         }
 
-        public override IStep[] Create(PipelineRunner runner)
+        public override IStep[] Create()
         {
-            var pipeline = Utils.FindPipeline(Pipeline);
+            var pipelineFactory = Utils.FindPipeline(Pipeline);
 
-            if (pipeline == null)
-                return new IStep[]{new AbstractStep(runner, default)};
+            if (pipelineFactory == null)
+                return new IStep[]{new AbstractStep(default)};
 
-            var steps = new List<IStep> { new PipelineStep(runner, new PipelineStepParameters {Pipeline = pipeline}) };
-            steps.AddRange(pipeline.Create(runner));
+            var pipeline = pipelineFactory.Create();
+            var steps = new List<IStep> { new PipelineStep(new PipelineStepParameters {Pipeline = pipeline}) };
+            steps.AddRange(pipeline.Steps);
             return steps.ToArray();
         }
         

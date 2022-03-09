@@ -9,9 +9,9 @@ namespace Sokka06.Pipeliner
     {
         public DebugLogParameters Parameters;
     
-        public override IStep[] Create(PipelineRunner runner)
+        public override IStep[] Create()
         {
-            return new IStep[] {new DebugLogStep(runner, Parameters)};
+            return new IStep[] {new DebugLogStep(Parameters)};
         }
     }
 }

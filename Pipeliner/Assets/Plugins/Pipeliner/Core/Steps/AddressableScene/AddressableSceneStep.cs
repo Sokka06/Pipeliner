@@ -32,7 +32,7 @@ namespace Sokka06.Pipeliner
     
     public class AddressableSceneStep : AbstractStep
     {
-        public AddressableSceneStep(PipelineRunner runner, IStepParameters parameters) : base(runner, parameters)
+        public AddressableSceneStep(IStepParameters parameters) : base(parameters)
         {
         }
         

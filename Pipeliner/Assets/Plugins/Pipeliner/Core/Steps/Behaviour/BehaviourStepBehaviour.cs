@@ -12,10 +12,10 @@ namespace Sokka06.Pipeliner
     {
         public StepFactoryBehaviour StepBehaviour;
         
-        public override IStep[] Create(PipelineRunner runner)
+        public override IStep[] Create()
         {
-            var steps = new List<IStep> { new BehaviourStep(runner, default) };
-            steps.AddRange(StepBehaviour.Create(runner));
+            var steps = new List<IStep> { new BehaviourStep(default) };
+            steps.AddRange(StepBehaviour.Create());
             return steps.ToArray();
         }
     }

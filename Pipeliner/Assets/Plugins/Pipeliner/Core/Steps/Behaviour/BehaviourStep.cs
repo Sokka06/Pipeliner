@@ -7,7 +7,7 @@ namespace Sokka06.Pipeliner
 {
     public class BehaviourStep : AbstractStep
     {
-        public BehaviourStep(PipelineRunner runner, IStepParameters parameters) : base(runner, parameters)
+        public BehaviourStep(IStepParameters parameters) : base(parameters)
         {
         }
 
