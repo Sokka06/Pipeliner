@@ -14,9 +14,10 @@ public class PipelinerTests
     {
         InstantiateRunnerAndPipeline(out var runner, out var pipelineFactory);
 
-        var pipeline = pipelineFactory.Create();
+        runner.Pipeline = pipelineFactory;
+        
         var result = default(IPipelineResult);
-        yield return runner.Run(pipeline, value => result = value);
+        yield return runner.Run(value => result = value);
         
         Assert.IsInstanceOf<IPipelineResult.Success>(result);
     }

@@ -46,9 +46,8 @@ namespace Sokka06.Pipeliner
         {
             if (AutoRun)
             {
-                var pipeline = Utils.FindPipeline(Pipeline)?.Create();
                 var result = default(IPipelineResult);
-                yield return Run(pipeline, value => result = value);
+                yield return Run(value => result = value);
                 
                 /*foreach (var VARIABLE in result.StepResults)
                 {
@@ -58,14 +57,19 @@ namespace Sokka06.Pipeliner
         }
         
         /// <summary>
-        /// Runs given Pipeline.
+        /// Runs Pipeline from GameObject/Scriptable Object.
         /// </summary>
         /// <param name="pipeline"></param>
         /// <param name="result"></param>
-        public virtual IEnumerator Run(IPipeline pipeline, Action<IPipelineResult> result = default)
+        public virtual IEnumerator Run(Action<IPipelineResult> result = default)
         {
-            Runner = new PipelineRunner(pipeline, Settings);
-            yield return Runner.Run(result);
+            var pipeline = Utils.FindPipeline(Pipeline)?.Create();
+
+            if (pipeline != null)
+            {
+                Runner = new PipelineRunner(pipeline, Settings);
+                yield return Runner.Run(result);
+            }
         }
     }
 }
