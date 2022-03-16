@@ -13,7 +13,7 @@ namespace Sokka06.Pipeliner
         {
             // Create a custom game object
             var go = new GameObject("Pipeline Runner");
-            var runner = go.AddComponent<PipelineRunner>();
+            var runner = go.AddComponent<PipelineRunnerBehaviour>();
         
             // Ensure it gets reparented if this was a context click (otherwise does nothing)
             GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);

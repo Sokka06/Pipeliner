@@ -12,11 +12,11 @@ public class PipelinerTests
     [UnityTest]
     public IEnumerator _01Success()
     {
-        InstantiateRunnerAndPipeline(out var runner, out var pipeline);
+        InstantiateRunnerAndPipeline(out var runner, out var pipelineFactory);
 
-        runner.Pipeline = pipeline;
+        var pipeline = pipelineFactory.Create();
         var result = default(IPipelineResult);
-        yield return runner.Run(value => result = value);
+        yield return runner.Run(pipeline, value => result = value);
         
         Assert.IsInstanceOf<IPipelineResult.Success>(result);
     }
@@ -25,12 +25,12 @@ public class PipelinerTests
     /// Instantiates runner from a prefab.
     /// </summary>
     /// <returns></returns>
-    private void InstantiateRunnerAndPipeline(out PipelineRunner runner, out PipelineBehaviour pipeline)
+    private void InstantiateRunnerAndPipeline(out PipelineRunnerBehaviour runner, out PipelineBehaviour pipeline)
     {
         var prefab = AssetDatabase.LoadAssetAtPath("Assets/Tests/PlayMode/Test.prefab", typeof(GameObject)) as GameObject;
         var o = GameObject.Instantiate(prefab);
 
-        runner = o.GetComponentInChildren<PipelineRunner>();
+        runner = o.GetComponentInChildren<PipelineRunnerBehaviour>();
         pipeline = o.GetComponentInChildren<PipelineBehaviour>();
     }
 }

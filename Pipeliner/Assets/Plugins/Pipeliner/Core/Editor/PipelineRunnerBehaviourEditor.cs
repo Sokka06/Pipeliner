@@ -11,9 +11,9 @@ namespace Sokka06.Pipeliner
         private Button _runButton;
         private Button _abortButton;
 
-        private readonly PipelineRunner _pipelineRunner;
+        private readonly PipelineRunnerBehaviour _pipelineRunner;
 
-        public ControlsElement(PipelineRunner pipelineRunner)
+        public ControlsElement(PipelineRunnerBehaviour pipelineRunner)
         {
             _pipelineRunner = pipelineRunner;
 
@@ -32,7 +32,7 @@ namespace Sokka06.Pipeliner
 
         public void UpdateElement()
         {
-            if (_pipelineRunner.Data == null)
+            if (_pipelineRunner.Pipeline == null || !EditorApplication.isPlaying)
             {
                 _runButton.SetEnabled(false);
                 _abortButton.SetEnabled(false);
@@ -47,16 +47,13 @@ namespace Sokka06.Pipeliner
 
         private void OnRunButtonClicked()
         {
-            _pipelineRunner.StartCoroutine(_pipelineRunner.Run());
+            var pipeline = Utils.FindPipeline(_pipelineRunner.Pipeline)?.Create();
+            _pipelineRunner.StartCoroutine(_pipelineRunner.Run(pipeline));
         }
         
         private void OnAbortButtonClicked()
         {
-            //if (!(_pipelineRunner.State.CurrentState is IPipelineState.Running))
-            //    return;
-            
-            Debug.Log("Abort Button Clicked");
-            _pipelineRunner.Abort();
+            _pipelineRunner.Runner?.Abort();
         }
     }
     
@@ -69,9 +66,9 @@ namespace Sokka06.Pipeliner
         private Label _stateLabel;
         private Label _progressLabel;
 
-        private readonly PipelineRunner _pipelineRunner;
+        private readonly PipelineRunnerBehaviour _pipelineRunner;
 
-        public InfoElement(PipelineRunner pipelineRunner)
+        public InfoElement(PipelineRunnerBehaviour pipelineRunner)
         {
             _pipelineRunner = pipelineRunner;
             
@@ -99,7 +96,7 @@ namespace Sokka06.Pipeliner
             if (!_foldout.visible)
                 return;
             
-            if (_pipelineRunner.Data == null)
+            if (_pipelineRunner.Runner == null)
             {
                 _helpBox.text = "Run the pipeline to display useful information here.";
                 _helpBox.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
@@ -108,9 +105,9 @@ namespace Sokka06.Pipeliner
             
             _helpBox.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
             
-            _stepsLabel.text = $"Step Count: {(_pipelineRunner.CurrentPipeline.Steps.Length.ToString())}";
-            _stateLabel.text = $"State: {(_pipelineRunner.State.CurrentState.GetType().Name)}";
-            _progressLabel.text = $"Progress: {(_pipelineRunner.Progress.ToString("P"))} ({(_pipelineRunner.StepIndex + 1).ToString()}/{_pipelineRunner.CurrentPipeline.Steps.Length})";
+            _stepsLabel.text = $"Step Count: {(_pipelineRunner.Runner.Pipeline.Steps.Length.ToString())}";
+            _stateLabel.text = $"State: {(_pipelineRunner.Runner.State.CurrentState.GetType().Name)}";
+            _progressLabel.text = $"Progress: {(_pipelineRunner.Runner.Progress.ToString("P"))} ({(_pipelineRunner.Runner.StepIndex + 1).ToString()}/{_pipelineRunner.Runner.Pipeline.Steps.Length})";
         }
     }
     
@@ -120,9 +117,9 @@ namespace Sokka06.Pipeliner
         private HelpBox _logBox;
         private Button _clearButton;
 
-        private readonly PipelineRunner _pipelineRunner;
+        private readonly PipelineRunnerBehaviour _pipelineRunner;
 
-        public LogElement(PipelineRunner pipelineRunner)
+        public LogElement(PipelineRunnerBehaviour pipelineRunner)
         {
             _pipelineRunner = pipelineRunner;
             
@@ -150,7 +147,7 @@ namespace Sokka06.Pipeliner
             if (!_foldout.visible)
                 return;
             
-            if (_pipelineRunner.Logger == null)
+            if (_pipelineRunner.Runner == null)
             {
                 var hidden = new StyleEnum<DisplayStyle>(DisplayStyle.None);
                 _logBox.style.display = hidden;
@@ -162,19 +159,19 @@ namespace Sokka06.Pipeliner
             _logBox.style.display = visible;
             _clearButton.style.display = visible;
             
-            _logBox.text = _pipelineRunner.Logger.Logs.ToString();
+            _logBox.text = _pipelineRunner.Runner.Logger.Logs.ToString();
         }
 
         private void OnClearButtonClicked()
         {
-            _pipelineRunner.Logger.Clear();
+            _pipelineRunner.Runner.Logger.Clear();
         }
     }
     
-    [CustomEditor(typeof(PipelineRunner))]
-    public class PipelineRunnerEditor : Editor
+    [CustomEditor(typeof(PipelineRunnerBehaviour))]
+    public class PipelineRunnerBehaviourEditor : Editor
     {
-        private PipelineRunner _target;
+        private PipelineRunnerBehaviour _target;
         private VisualElement _root;
 
         private ControlsElement _controlsElement;
@@ -183,7 +180,7 @@ namespace Sokka06.Pipeliner
         
         public virtual void OnEnable()
         {
-            _target = (PipelineRunner)target;
+            _target = (PipelineRunnerBehaviour)target;
             _root = new VisualElement();
             
             EditorApplication.update += UpdateInspector;

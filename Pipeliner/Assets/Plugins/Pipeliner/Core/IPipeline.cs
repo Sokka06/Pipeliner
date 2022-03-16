@@ -59,5 +59,13 @@ namespace Sokka06.Pipeliner
         /// <typeparam name="T">Step type</typeparam>
         /// <returns></returns>
         T GetStep<T>() where T : AbstractStep;
+        
+        /// <summary>
+        /// Gets all Steps of given type.
+        /// </summary>
+        /// <param name="steps">Array that will be filled with matching Steps.</param>
+        /// <typeparam name="T">Step type to get.</typeparam>
+        /// <returns>Count of found Steps.</returns>
+        int GetSteps<T>(ref T[] steps) where T : AbstractStep;
     }
 }

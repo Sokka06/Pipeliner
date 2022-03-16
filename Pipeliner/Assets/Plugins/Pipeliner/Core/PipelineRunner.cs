@@ -1,136 +1,89 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Sokka06.Pipeliner
 {
-    public interface IPipelineState : IState
+    public interface IPipelineRunnerState : IState
     {
-        public struct Idle : IPipelineState { }
-        public struct Running : IPipelineState { }
-        public struct Done : IPipelineState { }
+        public struct Idle : IPipelineRunnerState { }
+        public struct Running : IPipelineRunnerState { }
+        public struct Done : IPipelineRunnerState { }
 
         /*public struct Failed : IPipelineState { }
         public struct Success : IPipelineState { }
         public struct Aborted : IPipelineState { }*/
     }
 
-    public class PipelineRunnerData
+    [Serializable]
+    public struct PipelineRunnerSettings
     {
-        public IPipeline Pipeline;
-        public int StepIndex;
+        public bool AbortOnFail;
     }
 
-    [AddComponentMenu("Pipeliner/Pipeline Runner")]
-    public class PipelineRunner : MonoBehaviour
+    public class PipelineRunnerData
     {
-        [Tooltip("A GameObject containing a Pipeline Behaviour or a Pipeline Object")]
-        public Object Pipeline;
-        
-        [Space]
-        [Tooltip("Run Pipeline at Start.")]
-        public bool AutoRun;
-        [Tooltip("Stop a running Pipeline if a Step fails.")]
-        public bool AbortOnFail = true;
+        public int StepIndex;
+    }
+    
+    /// <summary>
+    /// Used to run a Pipeline. Should be used with a MonoBehaviour.
+    /// </summary>
+    public class PipelineRunner
+    {
+        public readonly PipelineRunnerSettings Settings;
+        public readonly IPipeline Pipeline;
         
         private float _progress;
         private bool _abortRequested;
         
-        public StateMachine<IPipelineState> State { get; private set; }
+        public StateMachine<IPipelineRunnerState> State { get; private set; }
+        public int StepIndex { get; private set; }
+        public Logger Logger { get; private set; }
         public PipelineRunnerData Data { get; private set; }
         
-        public IPipeline CurrentPipeline { get; private set; }
-        public IStep CurrentStep { get; private set; }
-        public int StepIndex { get; private set; }
-        
-        public Logger Logger { get; private set; }
-
-        public event Action OnPipelineFinished;
-        public event Action OnStepFinished;
-
         public float Progress
         {
             get => _progress;
             private set => _progress = Mathf.Clamp01(value);
         }
-        
-        private void OnValidate()
-        {
-            if (Pipeline != null)
-            {
-                var pipeline = Utils.FindPipeline(Pipeline);
 
-                if (pipeline == null)
-                {
-                    Debug.LogWarning($"No Pipeline found from {Pipeline.name}.");
-                    Pipeline = null;
-                }
-            }
-        }
-
-        private void Awake()
+        public PipelineRunner(IPipeline pipeline, PipelineRunnerSettings settings = default)
         {
-            var pipeline = Utils.FindPipeline(Pipeline);
-            CurrentPipeline = pipeline.Create();
-            
-            Progress = 0f;
-            State = new StateMachine<IPipelineState>(new IPipelineState.Idle());
+            Pipeline = pipeline;
+            Settings = settings;
+            State = new StateMachine<IPipelineRunnerState>(new IPipelineRunnerState.Idle());
             Data = new PipelineRunnerData();
             Logger = new Logger();
-            Logger.Log("Initialized Pipeline Runner");
         }
 
-        protected virtual IEnumerator Start()
+        public IEnumerator Run(Action<IPipelineResult> pipelineResult)
         {
-            if (AutoRun)
-            {
-                var result = default(IPipelineResult);
-                yield return Run(value => result = value);
-                foreach (var VARIABLE in result.StepResults)
-                {
-                    Debug.Log(VARIABLE);
-                }
-            }
-        }
-
-        public virtual IEnumerator Run(Action<IPipelineResult> pipelineResult = default)
-        {
-            Logger.Log($"Running Pipeline: {Pipeline.name}...");
+            Logger.Log($"Running Pipeline...");
             
-            State.SetState(new IPipelineState.Running());
+            State.SetState(new IPipelineRunnerState.Running());
             Progress = 0f;
             
             var result = new IPipelineResult.Default() as IPipelineResult;
-            var stepResults = new List<(IStep step, IStepResult result)>(CurrentPipeline.Steps.Length);
+            var stepResults = new List<(IStep step, IStepResult result)>(Pipeline.Steps.Length);
             
-            for (int i = 0; i < CurrentPipeline.Steps.Length; i++)
+            for (int i = 0; i < Pipeline.Steps.Length; i++)
             {
                 var stepResult = default(IStepResult);
                 
                 StepIndex = i;
-                CurrentStep = CurrentPipeline.Steps[StepIndex];
+                var currentStep = Pipeline.Steps[StepIndex];
                 
-                Logger.Log($"Running Step: {CurrentStep.GetType().Name}");
+                Logger.Log($"Running Step: {currentStep.GetType().Name}");
                 
-                CurrentStep.Progress.OnValueChanged += CalculateProgress;
-                yield return CurrentStep.Run(value => stepResult = value);
-                CurrentStep.Progress.OnValueChanged -= CalculateProgress;
-                
-                //OnStepFinished?.Invoke();
-                
-                Logger.Log($"Finished Step: {CurrentStep.GetType().Name}, {stepResult.GetType().Name}");
-                
-                stepResults.Add((CurrentStep, stepResult));
+                currentStep.Progress.OnValueChanged += CalculateProgress;
+                yield return currentStep.Run(value => stepResult = value);
+                currentStep.Progress.OnValueChanged -= CalculateProgress;
 
-                // Abort run if a step fails.
-                if (AbortOnFail && stepResult is IStepResult.Failed)
-                {
-                    result = new IPipelineResult.Aborted(stepResults);
-                    break;
-                }
+                Logger.Log($"Finished Step: {currentStep.GetType().Name}, {stepResult.GetType().Name}");
+                
+                stepResults.Add((currentStep, stepResult));
 
                 if (_abortRequested)
                 {
@@ -145,22 +98,21 @@ namespace Sokka06.Pipeliner
 
             Progress = 1f;
             
-            State.SetState(new IPipelineState.Done());
+            State.SetState(new IPipelineRunnerState.Done());
             pipelineResult?.Invoke(result);
-            OnPipelineFinished?.Invoke();
             
-            Logger.Log($"Finished Pipeline: {Pipeline.name}, {result.GetType().Name}");
+            Logger.Log($"Finished Pipeline, {result.GetType().Name}");
         }
-
+        
         /// <summary>
         /// Aborts a running Pipeline.
         /// </summary>
         public void Abort()
         {
-            if (_abortRequested || !(State.CurrentState is IPipelineState.Running))
+            if (_abortRequested || !(State.CurrentState is IPipelineRunnerState.Running))
                 return;
 
-            CurrentStep.Abort();
+            Pipeline.Steps[StepIndex].Abort();
             _abortRequested = true;
         }
         
@@ -168,19 +120,15 @@ namespace Sokka06.Pipeliner
         {
             Progress = 0f;
 
-            if (CurrentPipeline.Steps.Length > 0)
+            if (Pipeline.Steps.Length > 0)
             {
-                for (int i = 0; i < CurrentPipeline.Steps.Length; i++)
+                for (int i = 0; i < Pipeline.Steps.Length; i++)
                 {
-                    Progress += CurrentPipeline.Steps[i].Progress.Value;
+                    Progress += Pipeline.Steps[i].Progress.Value;
                 }
             
-                Progress /= CurrentPipeline.Steps.Length;
+                Progress /= Pipeline.Steps.Length;
             }
-            
-            //Debug.Log($"Progress Changed: {Progress}");
-            //return Progress;
         }
     }
 }
-
