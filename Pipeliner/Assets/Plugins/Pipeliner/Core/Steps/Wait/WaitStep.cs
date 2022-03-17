@@ -37,9 +37,8 @@ namespace Sokka06.Pipeliner
 
             while (waitTime > 0f)
             {
-                Progress.Value = 1f - waitTime / parameters.WaitTime;
-
                 waitTime -= Time.fixedDeltaTime;
+                Progress.Value = 1f - waitTime / parameters.WaitTime;
                 yield return new WaitForFixedUpdate();
 
                 if (!_abortRequested)
@@ -49,12 +48,12 @@ namespace Sokka06.Pipeliner
                 _abortRequested = false;
                 break;
             }
+            Progress.Value = 1f;
 
             if (stepResult is IStepResult.Default)
                 stepResult = new IStepResult.Success();
             
             result?.Invoke(stepResult);
-            Progress.Value = 1f;
         }
     }
 }

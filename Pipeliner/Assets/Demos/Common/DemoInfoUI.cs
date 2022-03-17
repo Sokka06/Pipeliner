@@ -43,7 +43,7 @@ namespace Demos.Common
                 
                 var rectTransform = DescriptionText.rectTransform.parent as RectTransform;
                 rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Mathf.RoundToInt(DescriptionText.preferredHeight));
-                Debug.Log($"{DescriptionText.preferredHeight}, {rectTransform.sizeDelta}");
+                //Debug.Log($"{DescriptionText.preferredHeight}, {rectTransform.sizeDelta}");
             }
         }
     }

@@ -34,7 +34,7 @@ namespace Sokka06.Pipeliner
 
         private void ValidateSteps()
         {
-            if (EditorApplication.isPlaying)
+            if (_target == null || EditorApplication.isPlaying)
                 return;
 
             var hasChanged = false;

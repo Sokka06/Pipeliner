@@ -77,9 +77,16 @@ namespace Sokka06.Pipeliner
                 
                 Logger.Log($"Running Step: {currentStep.GetType().Name}");
                 
-                currentStep.Progress.OnValueChanged += CalculateProgress;
-                yield return currentStep.Run(value => stepResult = value);
-                currentStep.Progress.OnValueChanged -= CalculateProgress;
+                var e = currentStep.Run(value => stepResult = value);
+                while (e.MoveNext())
+                {
+                    yield return e.Current;
+                    CalculateProgress(0);
+                }
+                // Old way
+                //currentStep.Progress.OnValueChanged += CalculateProgress;
+                //yield return currentStep.Run(value => stepResult = value);
+                //currentStep.Progress.OnValueChanged -= CalculateProgress;
 
                 Logger.Log($"Finished Step: {currentStep.GetType().Name}, {stepResult.GetType().Name}");
                 
@@ -122,12 +129,12 @@ namespace Sokka06.Pipeliner
 
             if (Pipeline.Steps.Length > 0)
             {
+                var invLength = 1f / Pipeline.Steps.Length;
+                
                 for (int i = 0; i < Pipeline.Steps.Length; i++)
                 {
-                    Progress += Pipeline.Steps[i].Progress.Value;
+                    Progress += Pipeline.Steps[i].Progress.Value * invLength;
                 }
-            
-                Progress /= Pipeline.Steps.Length;
             }
         }
     }

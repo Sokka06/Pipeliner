@@ -47,6 +47,7 @@ namespace Sokka06.Pipeliner
             if (AutoRun)
             {
                 var result = default(IPipelineResult);
+                
                 yield return Run(value => result = value);
                 
                 /*foreach (var VARIABLE in result.StepResults)
@@ -68,7 +69,14 @@ namespace Sokka06.Pipeliner
             if (pipeline != null)
             {
                 Runner = new PipelineRunner(pipeline, Settings);
-                yield return Runner.Run(result);
+
+                var e = Runner.Run(result);
+                while (e.MoveNext())
+                {
+                    //Debug.Log($"{e.Current}");
+                    yield return e.Current;
+                }
+                //yield return Runner.Run(result);
             }
         }
     }

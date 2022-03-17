@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66475ad548526f04c97691c9b2c9bae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WaitTime: 2
+  WaitTime: 3
 --- !u!114 &185027697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -785,5 +785,9 @@ PrefabInstance:
       propertyPath: info
       value: 
       objectReference: {fileID: 11400000, guid: d3f2eaa1c20a632488562fe4e4c8b8d2, type: 2}
+    - target: {fileID: 2099606464283106308, guid: 28bd5bcd330dd5a409e4b5e3e0fa2c00, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 188
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28bd5bcd330dd5a409e4b5e3e0fa2c00, type: 3}

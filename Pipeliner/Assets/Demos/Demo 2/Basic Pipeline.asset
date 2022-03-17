@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Basic Pipeline
   m_EditorClassIdentifier: 
   Steps:
+  - {fileID: 11400000, guid: 643c14ec8c3e59a4a918184cbe310cf4, type: 2}
   - {fileID: 11400000, guid: ac3e5f6ae781db04993a75dd0121d45d, type: 2}
