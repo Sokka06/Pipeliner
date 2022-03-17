@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -12,11 +13,52 @@ namespace Sokka06.Pipeliner
         private PipelineBehaviour _target;
         private VisualElement _root;
         private VisualElement _controls;
-        
+
         public virtual void OnEnable()
         {
             _target = (PipelineBehaviour)target;
             _root = new VisualElement();
+            
+            EditorApplication.update += UpdateInspector;
+        }
+
+        private void OnDisable()
+        {
+            EditorApplication.update -= UpdateInspector;
+        }
+
+        private void UpdateInspector()
+        {
+            ValidateSteps();
+        }
+
+        private void ValidateSteps()
+        {
+            if (EditorApplication.isPlaying)
+                return;
+
+            var hasChanged = false;
+            var steps = _target.FindSteps();
+            
+            // Compare steps. Could also use LINQ SequenceEqual
+            if (_target.Steps.Count != steps.Length)
+            {
+                hasChanged = true;
+            }
+            else
+            {
+                for (int i = 0; i < _target.Steps.Count; i++)
+                {
+                    if (_target.Steps[i].GetHashCode() == steps[i].GetHashCode())
+                        continue;
+
+                    hasChanged = true;
+                    break;
+                }
+            }
+
+            if (hasChanged)
+                UpdateSteps(steps);
         }
         
         public override VisualElement CreateInspectorGUI()
@@ -56,8 +98,7 @@ namespace Sokka06.Pipeliner
 
             var button = new Button(() =>
             {
-                _target.Steps = new List<StepFactoryBehaviour>(_target.FindSteps());
-                EditorUtility.SetDirty(target);
+                UpdateSteps(_target.FindSteps());
             })
             {
                 text = "Update Steps"
@@ -65,6 +106,12 @@ namespace Sokka06.Pipeliner
             _controls.Add(button);
 
             return _controls;
+        }
+
+        private void UpdateSteps(StepFactoryBehaviour[] steps)
+        {
+            _target.Steps = new List<StepFactoryBehaviour>(steps);
+            EditorUtility.SetDirty(target);
         }
     }
 }
