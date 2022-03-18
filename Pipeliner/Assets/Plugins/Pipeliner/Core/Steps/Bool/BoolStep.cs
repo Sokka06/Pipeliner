@@ -31,7 +31,7 @@ namespace Sokka06.Pipeliner
                 result?.Invoke(new IStepResult.Failed());
             }
             
-            Progress.Value = 1f;
+            Progress = 1f;
         }
     }
 }

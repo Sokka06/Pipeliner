@@ -35,8 +35,8 @@ namespace Sokka06.Pipeliner
             if (stepResult is IStepResult.Default)
                 stepResult = new IStepResult.Success();
             
+            Progress = 1f;
             result?.Invoke(stepResult);
-            Progress.Value = 1f;
         }
     }
 }

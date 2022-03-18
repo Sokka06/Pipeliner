@@ -10,11 +10,14 @@ namespace Sokka06.Pipeliner
     public interface IStep
     {
         IStepParameters Parameters { get; }
-        EventValue<float> Progress { get; }
+        float Progress { get; }
 
         IEnumerator Run(Action<IStepResult> result);
 
-        void Abort();
+        /// <summary>
+        /// Called when Step is aborted while running.
+        /// </summary>
+        void OnAbort();
     }
 
     public interface IStepResult

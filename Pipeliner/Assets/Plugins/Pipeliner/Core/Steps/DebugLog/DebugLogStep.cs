@@ -49,7 +49,7 @@ namespace Sokka06.Pipeliner
                     throw new ArgumentOutOfRangeException();
             }
             
-            Progress.Value = 1f;
+            Progress = 1f;
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Sokka06.Pipeliner
                 if(parameters.Scenes[i].SetActive)
                     SceneManager.SetActiveScene(handle.Result.Scene);
 
-                Progress.Value = 1f;
+                Progress = 1f;
             }
         }
     }

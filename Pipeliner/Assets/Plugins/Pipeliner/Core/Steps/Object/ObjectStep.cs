@@ -19,7 +19,7 @@ namespace Sokka06.Pipeliner
         public override IEnumerator Run(Action<IStepResult> result)
         {
             yield return base.Run(result);
-            Progress.Value = 1f;
+            Progress = 1f;
         }
     }
 }

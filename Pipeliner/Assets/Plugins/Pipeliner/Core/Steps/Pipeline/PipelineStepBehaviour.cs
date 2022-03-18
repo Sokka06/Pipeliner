@@ -33,7 +33,7 @@ namespace Sokka06.Pipeliner
             var pipelineFactory = Utils.FindPipeline(Pipeline);
 
             if (pipelineFactory == null)
-                return new IStep[]{new AbstractStep(default)};
+                return new IStep[]{};
 
             var pipeline = pipelineFactory.Create();
             var steps = new List<IStep> { new PipelineStep(new PipelineStepParameters {Pipeline = pipeline}) };

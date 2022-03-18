@@ -9,7 +9,7 @@ namespace Sokka06.Pipeliner
     {
         public struct Idle : IPipelineRunnerState { }
         public struct Running : IPipelineRunnerState { }
-        public struct Done : IPipelineRunnerState { }
+        public struct Finished : IPipelineRunnerState { }
 
         /*public struct Failed : IPipelineState { }
         public struct Success : IPipelineState { }
@@ -53,6 +53,7 @@ namespace Sokka06.Pipeliner
         {
             Pipeline = pipeline;
             Settings = settings;
+            
             State = new StateMachine<IPipelineRunnerState>(new IPipelineRunnerState.Idle());
             Data = new PipelineRunnerData();
             Logger = new Logger();
@@ -63,10 +64,11 @@ namespace Sokka06.Pipeliner
             Logger.Log($"Running Pipeline...");
             
             State.SetState(new IPipelineRunnerState.Running());
-            Progress = 0f;
             
             var result = new IPipelineResult.Default() as IPipelineResult;
             var stepResults = new List<(IStep step, IStepResult result)>(Pipeline.Steps.Length);
+            
+            Progress = 0f;
             
             for (int i = 0; i < Pipeline.Steps.Length; i++)
             {
@@ -78,34 +80,32 @@ namespace Sokka06.Pipeliner
                 Logger.Log($"Running Step: {currentStep.GetType().Name}");
                 
                 var e = currentStep.Run(value => stepResult = value);
-                while (e.MoveNext())
+                while (e.MoveNext() && !_abortRequested)
                 {
                     yield return e.Current;
-                    CalculateProgress(0);
+                    CalculateTotalProgress();
                 }
-                // Old way
-                //currentStep.Progress.OnValueChanged += CalculateProgress;
-                //yield return currentStep.Run(value => stepResult = value);
-                //currentStep.Progress.OnValueChanged -= CalculateProgress;
+
+                if (_abortRequested)
+                {
+                    currentStep.OnAbort();
+                    stepResult = new IStepResult.Aborted();
+                }
 
                 Logger.Log($"Finished Step: {currentStep.GetType().Name}, {stepResult.GetType().Name}");
                 
                 stepResults.Add((currentStep, stepResult));
-
-                if (_abortRequested)
-                {
-                    result = new IPipelineResult.Aborted(stepResults);
-                    _abortRequested = false;
-                    break;
-                }
             }
+            
+            Progress = 1f;
+            
+            if (_abortRequested)
+                result = new IPipelineResult.Aborted(stepResults);
 
             if (result is IPipelineResult.Default)
                 result = new IPipelineResult.Success(stepResults);
 
-            Progress = 1f;
-            
-            State.SetState(new IPipelineRunnerState.Done());
+            State.SetState(new IPipelineRunnerState.Finished());
             pipelineResult?.Invoke(result);
             
             Logger.Log($"Finished Pipeline, {result.GetType().Name}");
@@ -116,14 +116,13 @@ namespace Sokka06.Pipeliner
         /// </summary>
         public void Abort()
         {
-            if (_abortRequested || !(State.CurrentState is IPipelineRunnerState.Running))
-                return;
-
-            Pipeline.Steps[StepIndex].Abort();
             _abortRequested = true;
         }
         
-        private void CalculateProgress(float asd)
+        /// <summary>
+        /// Calculates total runner progress from all Steps.
+        /// </summary>
+        private void CalculateTotalProgress()
         {
             Progress = 0f;
 
@@ -133,7 +132,7 @@ namespace Sokka06.Pipeliner
                 
                 for (int i = 0; i < Pipeline.Steps.Length; i++)
                 {
-                    Progress += Pipeline.Steps[i].Progress.Value * invLength;
+                    Progress += Pipeline.Steps[i].Progress * invLength;
                 }
             }
         }
