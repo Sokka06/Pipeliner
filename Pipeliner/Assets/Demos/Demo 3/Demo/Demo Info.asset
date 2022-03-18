@@ -12,11 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee9db9c6bf13d374c831cede45e2e506, type: 3}
   m_Name: Demo Info
   m_EditorClassIdentifier: 
-  Title: Demo 1
-  Subtitle: Basic
-  Description: 'This is a simple demo that prints a couple <b>Debug.Logs</b> using
-    a <b>Pipeline</b>.
-
-
-    Play the scene, press <b>Run</b> on <b>Pipeline Runner</b>
-    and look at your <b>console</b>.'
+  Title: Demo
+  Subtitle: Subtitle
+  Description: Description
