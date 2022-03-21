@@ -11,7 +11,7 @@ namespace Sokka06.Pipeliner
     [AddComponentMenu("Pipeliner/Pipeline")]
     public class PipelineBehaviour : MonoBehaviour, IPipelineFactory
     {
-        public List<StepFactoryBehaviour> Steps;
+        public List<StepFactoryBehaviour> Steps = new List<StepFactoryBehaviour>();
 
         public virtual StepFactoryBehaviour[] FindSteps()
         {

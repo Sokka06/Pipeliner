@@ -19,7 +19,7 @@ namespace Sokka06.Pipeliner
         public PipelineRunnerSettings Settings;
 
         public PipelineRunner Runner { get; private set; }
-        
+
         public event Action OnPipelineFinished;
         public event Action OnStepFinished;
 
@@ -37,23 +37,12 @@ namespace Sokka06.Pipeliner
             }
         }
 
-        private void Awake()
-        {
-            
-        }
-
-        protected virtual IEnumerator Start()
+        protected virtual void Start()
         {
             if (AutoRun)
             {
                 var result = default(IPipelineResult);
-                
-                yield return Run(value => result = value);
-                
-                /*foreach (var VARIABLE in result.StepResults)
-                {
-                    Debug.Log(VARIABLE);
-                }*/
+                Run(value => result = value);
             }
         }
         
@@ -62,21 +51,14 @@ namespace Sokka06.Pipeliner
         /// </summary>
         /// <param name="pipeline"></param>
         /// <param name="result"></param>
-        public virtual IEnumerator Run(Action<IPipelineResult> result = default)
+        public virtual void Run(Action<IPipelineResult> result = default)
         {
             var pipeline = Utils.FindPipeline(Pipeline)?.Create();
 
             if (pipeline != null)
             {
                 Runner = new PipelineRunner(pipeline, Settings);
-
-                var e = Runner.Run(result);
-                while (e.MoveNext())
-                {
-                    //Debug.Log($"{e.Current}");
-                    yield return e.Current;
-                }
-                //yield return Runner.Run(result);
+                StartCoroutine(Runner.Run(result));
             }
         }
     }

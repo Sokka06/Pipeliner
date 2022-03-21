@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: Demo Info
   m_EditorClassIdentifier: 
   Title: Demo
-  Subtitle: Subtitle
-  Description: Description
+  Subtitle: Initialization
+  Description: 'This is an example of how <b>Pipeliner</b> can be used to initialize
+    stuff on startup.
+
+
+'

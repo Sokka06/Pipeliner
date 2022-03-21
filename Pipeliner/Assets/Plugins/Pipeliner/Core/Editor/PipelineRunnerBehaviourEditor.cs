@@ -47,7 +47,7 @@ namespace Sokka06.Pipeliner
 
         private void OnRunButtonClicked()
         {
-            _pipelineRunner.StartCoroutine(_pipelineRunner.Run());
+            _pipelineRunner.Run();
         }
         
         private void OnAbortButtonClicked()

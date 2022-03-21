@@ -41,6 +41,7 @@ namespace Sokka06.Pipeliner
         public StateMachine<IPipelineRunnerState> State { get; private set; }
         public int StepIndex { get; private set; }
         public Logger Logger { get; private set; }
+        public IPipelineResult Result { get; private set; }
         public PipelineRunnerData Data { get; private set; }
         
         public float Progress
@@ -105,6 +106,7 @@ namespace Sokka06.Pipeliner
             if (result is IPipelineResult.Default)
                 result = new IPipelineResult.Success(stepResults);
 
+            Result = result;
             State.SetState(new IPipelineRunnerState.Finished());
             pipelineResult?.Invoke(result);
             
