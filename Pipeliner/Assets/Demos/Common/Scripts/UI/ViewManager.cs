@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class ViewEntry
 {
-    public bool HideOnSetup = true;
+    public bool ShowOnStart;
     public UIView View;
 }
 
@@ -26,6 +26,17 @@ public class ViewManager : MonoBehaviour
         SetupViews();
     }
 
+    private void Start()
+    {
+        for (int i = 0; i < Views.Count; i++)
+        {
+            var entry = Views[i];
+            
+            if (entry.ShowOnStart)
+                entry.View.Show();
+        }
+    }
+
     public void SetupViews()
     {
         for (int i = 0; i < Views.Count; i++)
@@ -33,8 +44,7 @@ public class ViewManager : MonoBehaviour
             var entry = Views[i];
             
             entry.View.Setup(this);
-            if (entry.HideOnSetup)
-                entry.View.Hide();
+            entry.View.Hide();
             
             RegisterView(entry.View);
         }

@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3409e651749ea5044adea3613417afa9, type: 3}
-  m_Name: Initialization Pipeline
+  m_Script: {fileID: 11500000, guid: ee9db9c6bf13d374c831cede45e2e506, type: 3}
+  m_Name: Demo Info
   m_EditorClassIdentifier: 
-  Steps: []
+  Title: Demo
+  Subtitle: Subtitle
+  Description: Description
