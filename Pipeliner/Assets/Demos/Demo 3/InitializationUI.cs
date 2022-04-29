@@ -63,8 +63,12 @@ public class InitializationUI : MonoBehaviour
     {
         switch (step)
         {
-            case LoadDataStep<UserData> userData:
-                return $"User Data...";
+            case PlayServicesStep playServices:
+                return "Google Play Services...";
+            case FirebaseStep firebase:
+                return "Firebase...";
+            case LoadDataStep<GameData> userData:
+                return $"Save Data...";
             default:
                 return "";
         }

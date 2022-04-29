@@ -9,7 +9,6 @@ using UnityEngine;
 public struct LoadDataStepParameters: IStepParameters
 {
     public DataSystem DataSystem;
-    public IData Data;
 }
 
 public class LoadDataStepFactory : StepFactoryBehaviour
@@ -20,9 +19,8 @@ public class LoadDataStepFactory : StepFactoryBehaviour
     {
         var parameters = new LoadDataStepParameters
         {
-            DataSystem = DataSystem,
-            Data = new UserData()
+            DataSystem = DataSystem
         };
-        return new IStep[]{new LoadDataStep<UserData>(parameters)};
+        return new IStep[]{new LoadDataStep<GameData>(parameters)};
     }
 }

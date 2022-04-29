@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Title: Demo 1
   Subtitle: Basic
-  Description: 'This is a simple demo that prints a couple <b>Debug.Logs</b> using
+  Description: 'This is a simple demo that prints a couple of <b>Debug.Logs</b> using
     a <b>Pipeline</b>.
 
 

@@ -5,9 +5,9 @@ using Demos.Common;
 using Sokka06.Pipeliner;
 using UnityEngine;
 
-public class LoadDataStep<T> : AbstractStep where T : IData, new()
+public class SocialServicesStep : AbstractStep
 {
-    public LoadDataStep(LoadDataStepParameters parameters) : base(parameters)
+    public SocialServicesStep(IStepParameters parameters) : base(parameters)
     {
         
     }
@@ -25,7 +25,7 @@ public class LoadDataStep<T> : AbstractStep where T : IData, new()
             yield return null;
         }
 
-        yield return parameters.DataSystem.Load<T>();
+        
         result?.Invoke(new IStepResult.Success());
     }
 }
