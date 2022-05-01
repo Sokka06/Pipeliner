@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee9db9c6bf13d374c831cede45e2e506, type: 3}
-  m_Name: Demo Info
+  m_Script: {fileID: 11500000, guid: d659a673c63f578429fce149ba85f95a, type: 3}
+  m_Name: Menu Load Profile
   m_EditorClassIdentifier: 
-  Title: Demo
-  Subtitle: Initialization
-  Description: This is an example of how <b>Pipeliner</b> can be used to initialize
-    services, save data, and more on startup.
+  Name: Menu
+  SceneProfiles:
+  - {fileID: 11400000, guid: 062da2d1e5c338745b8d5a758acc74ec, type: 2}

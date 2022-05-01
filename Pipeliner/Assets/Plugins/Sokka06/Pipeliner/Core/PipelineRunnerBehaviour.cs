@@ -18,10 +18,10 @@ namespace Sokka06.Pipeliner
         [Space]
         public PipelineRunnerSettings Settings;
 
-        public PipelineRunner Runner { get; private set; }
+        public PipelineRunner Runner { get; protected set; }
+        public List<IPipelineResult> Results { get; protected set; } = new List<IPipelineResult>();
 
-        public event Action OnPipelineFinished;
-        public event Action OnStepFinished;
+        public event Action<IPipelineResult> onPipelineFinished;
 
         private void OnValidate()
         {
@@ -41,8 +41,11 @@ namespace Sokka06.Pipeliner
         {
             if (AutoRun)
             {
-                var result = default(IPipelineResult);
-                Run(value => result = value);
+                Run(value =>
+                {
+                    Results.Add(value);
+                    onPipelineFinished?.Invoke(value);
+                });
             }
         }
         
@@ -63,4 +66,3 @@ namespace Sokka06.Pipeliner
         }
     }
 }
-

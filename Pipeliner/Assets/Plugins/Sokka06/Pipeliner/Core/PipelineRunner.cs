@@ -22,11 +22,6 @@ namespace Sokka06.Pipeliner
         public bool AbortOnFail;
     }
 
-    public class PipelineRunnerData
-    {
-        public int StepIndex;
-    }
-    
     /// <summary>
     /// Used to run a Pipeline. Should be used with a MonoBehaviour.
     /// </summary>
@@ -42,7 +37,6 @@ namespace Sokka06.Pipeliner
         public int StepIndex { get; private set; }
         public Logger Logger { get; private set; }
         public IPipelineResult Result { get; private set; }
-        public PipelineRunnerData Data { get; private set; }
         
         public float Progress
         {
@@ -56,7 +50,6 @@ namespace Sokka06.Pipeliner
             Settings = settings;
             
             State = new StateMachine<IPipelineRunnerState>(new IPipelineRunnerState.Idle());
-            Data = new PipelineRunnerData();
             Logger = new Logger();
         }
 

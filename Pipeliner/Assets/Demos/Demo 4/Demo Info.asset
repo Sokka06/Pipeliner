@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee9db9c6bf13d374c831cede45e2e506, type: 3}
   m_Name: Demo Info
   m_EditorClassIdentifier: 
-  Title: Demo
-  Subtitle: Initialization
-  Description: This is an example of how <b>Pipeliner</b> can be used to initialize
-    services, save data, and more on startup.
+  Title: Demo 4
+  Subtitle: Loading Scenes
+  Description: 'Pipeliner can also be used purely by scripting.
+
+
+    This example
+    uses <b>LoadManager</b> to load Addressable Scenes defined in <b>Load Profiles</b>
+    and <b>Scene Profiles</b>.'

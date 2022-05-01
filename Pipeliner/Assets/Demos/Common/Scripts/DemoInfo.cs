@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Demos.Common
 {
-    [CreateAssetMenu(fileName = "Demo Info", menuName = "Demos/Info")]
+    [CreateAssetMenu(fileName = "Demo Info", menuName = "Demos/Info", order = -100)]
     public class DemoInfo : ScriptableObject
     {
         public string Title = "Demo";

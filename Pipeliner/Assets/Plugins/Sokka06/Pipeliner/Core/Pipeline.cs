@@ -6,8 +6,9 @@ namespace Sokka06.Pipeliner
 {
     public class Pipeline : IPipeline
     {
-        public IStep[] Steps => _steps;
         private readonly IStep[] _steps;
+        
+        public IStep[] Steps => _steps;
 
         public Pipeline(IStep[] steps)
         {
