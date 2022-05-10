@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Scenes:
   - SetActive: 0
-    LoadSceneMode: 0
+    LoadSceneMode: 1
     Asset:
       m_AssetGUID: 52788eca0d16fdd4e81fe1946c03678c
       m_SubObjectName: 

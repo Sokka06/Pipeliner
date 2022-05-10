@@ -7,6 +7,9 @@ using UnityEngine;
 
 /// <summary>
 /// Loads a Load Profiles using Pipeline Runner.
+/// Note: There's currently no way to load multiple scenes and activate them on the same frame in Unity.
+/// This means GameObjects in Scene A will run Awake, Start and a couple frames of Update
+/// before GameObjects in Scene B start running.
 /// </summary>
 public class LoadManager : SingletonBehaviour<LoadManager>
 {
@@ -30,8 +33,7 @@ public class LoadManager : SingletonBehaviour<LoadManager>
             new WaitStep(new WaitParameters(0.5f))
         };
 
-        var pipeline = new Pipeline(steps);
-        Runner = new PipelineRunner(pipeline);
+        Runner = new PipelineRunner(new Pipeline(steps));
 
         onLoadBegin?.Invoke(profile);
 

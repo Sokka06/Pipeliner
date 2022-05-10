@@ -27,27 +27,22 @@ public class InitializationUI : MonoBehaviour
     
     private void OnEnable()
     {
-        var result = default(IPipelineResult);
-        RunnerBehaviour.Run(value =>
-        {
-            result = value;
-            View.Manager.GetView("Finish View").Show();
-            View.Hide();
-        });
+        
     }
     
     private void OnViewStateChanged((IViewState previous, IViewState current) state)
     {
         // Used with Bolt/Visual Scripting
-        /*if (state.current is IViewState.Visible)
+        if (state.current is IViewState.Visible)
         {
             var result = default(IPipelineResult);
             RunnerBehaviour.Run(value =>
             {
                 result = value;
-                EventBus.Trigger(UIEvents.ViewEvent, "Finish View");
+                View.Manager.GetView("Finish View").Show();
+                View.Hide();
             });
-        }*/
+        }
     }
 
     private void LateUpdate()

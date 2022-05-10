@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Sokka06.Pipeliner;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
 public struct AddressableSceneStepParameters : IStepParameters
@@ -17,13 +19,15 @@ public struct AddressableSceneStepParameters : IStepParameters
 }
 
 /// <summary>
-/// Loads Addressable Scene.
+/// Loads an Addressable Scene.
 /// </summary>
 public class AddressableSceneStep : AbstractStep
 {
     public AddressableSceneStep(AddressableSceneStepParameters parameters) : base(parameters)
     {
     }
+
+    private AsyncOperationHandle<SceneInstance> _handle;
 
     public override IEnumerator Run(Action<IStepResult> result)
     {
@@ -36,16 +40,16 @@ public class AddressableSceneStep : AbstractStep
             Debug.Log("No Addressable Scene set.");
         }
         
-        var handle = Addressables.LoadSceneAsync(parameters.Scene.Asset, parameters.Scene.LoadSceneMode);
+        _handle = Addressables.LoadSceneAsync(parameters.Scene.Asset, parameters.Scene.LoadSceneMode);
 
-        while (!handle.IsDone)
+        while (!_handle.IsDone)
         {
-            Progress = handle.PercentComplete;
+            Progress = _handle.PercentComplete / 0.9f;
             yield return null;
         }
-                    
+
         if (parameters.Scene.SetActive)
-            SceneManager.SetActiveScene(handle.Result.Scene);
+            SceneManager.SetActiveScene(_handle.Result.Scene);
 
         Progress = 1f;
         result?.Invoke(new IStepResult.Success());

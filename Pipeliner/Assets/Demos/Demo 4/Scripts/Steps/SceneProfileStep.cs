@@ -19,8 +19,11 @@ public struct SceneProfileStepParameters : IStepParameters
 /// </summary>
 public class SceneProfileStep : AbstractStep
 {
+    private readonly AddressableSceneStep[] _steps;
+    
     public SceneProfileStep(SceneProfileStepParameters parameters) : base(parameters)
     {
+        _steps = new AddressableSceneStep[parameters.Profile.Scenes.Length];
     }
 
     public override IEnumerator Run(Action<IStepResult> result)
@@ -40,6 +43,8 @@ public class SceneProfileStep : AbstractStep
                 yield return e.Current;
                 Progress = i * inv + step.Progress * inv;
             }
+
+            _steps[i] = step;
         }
 
         Progress = 1f;

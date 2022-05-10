@@ -15,34 +15,56 @@ public interface IViewState : IState
 public class UIView : MonoBehaviour
 {
     public string Id;
+    public RectTransform Container;
     
     public ViewManager Manager { get; protected set; }
     public CanvasGroup CanvasGroup { get; protected set; }
     public RectTransform RectTransform => transform as RectTransform;
-    public StateMachine<IViewState> State { get; protected set; }
+    public StateMachine<IViewState> State { get; protected set; } = new StateMachine<IViewState>(new IViewState.Default());
 
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
         if (string.IsNullOrEmpty(Id))
             Id = gameObject.name;
+
+        if (Container == null)
+        {
+            var container = transform.Find("Container");
+            /*if (container == null)
+            {
+                var go = new GameObject
+                {
+                    name = "Container",
+                    transform =
+                    {
+                        parent = transform
+                    }
+                };
+                container = go.transform as RectTransform;
+            }*/
+            Container = container as RectTransform;
+        }
+    }
+
+    protected virtual void Awake()
+    {
+        CanvasGroup = GetComponent<CanvasGroup>();
     }
 
     public virtual void Setup(ViewManager viewManager)
     {
         Manager = viewManager;
-        CanvasGroup = GetComponent<CanvasGroup>();
-        State = new StateMachine<IViewState>(new IViewState.Default());
     }
 
     public virtual void Show()
     {
-        gameObject.SetActive(true);
+        Container.gameObject.SetActive(true);
         State.SetState(new IViewState.Visible());
     }
 
     public virtual void Hide()
     {
-        gameObject.SetActive(false);
+        Container.gameObject.SetActive(false);
         State.SetState(new IViewState.Hidden());
     }
 }

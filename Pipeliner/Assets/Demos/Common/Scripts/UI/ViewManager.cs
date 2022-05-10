@@ -50,9 +50,20 @@ public class ViewManager : MonoBehaviour
         }
     }
 
-    public UIView[] FindViews()
+    [ContextMenu("Find Views")]
+    public void FindViews()
     {
-        return FindObjectsOfType<UIView>();
+        var views = FindObjectsOfType<UIView>();
+        
+        Views = new List<ViewEntry>(views.Length);
+        for (int i = 0; i < views.Length; i++)
+        {
+            Views.Add(new ViewEntry
+            {
+                ShowOnStart = false,
+                View = views[i]
+            });
+        }
     }
 
     private void RegisterView(UIView view)

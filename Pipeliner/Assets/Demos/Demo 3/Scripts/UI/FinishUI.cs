@@ -25,15 +25,15 @@ public class FinishUI : MonoBehaviour
 
     private void OnEnable()
     {
-        Text.SetText(GetResultDescription(RunnerBehaviour.Runner.Result));
+        //Text.SetText(GetResultDescription(RunnerBehaviour.Runner.Result));
     }
 
     private void OnViewStateChanged((IViewState previous, IViewState current) state)
     {
-        /*if (state.current is IViewState.Visible)
+        if (state.current is IViewState.Visible)
         {
             Text.SetText(GetResultDescription(RunnerBehaviour.Runner.Result));
-        }*/
+        }
     }
     
     private string GetResultDescription(IPipelineResult result)

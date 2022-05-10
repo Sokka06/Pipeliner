@@ -23,8 +23,11 @@ namespace Demos.Demo4
     /// </summary>
     public class LoadProfileStep : AbstractStep
     {
+        private readonly SceneProfileStep[] _steps;
+
         public LoadProfileStep(LoadProfileStepParameters parameters) : base(parameters)
         {
+            _steps = new SceneProfileStep[parameters.Profile.SceneProfiles.Length];
         }
 
         public override IEnumerator Run(Action<IStepResult> result)
@@ -44,28 +47,9 @@ namespace Demos.Demo4
                     yield return e.Current;
                     Progress = i * inv + step.Progress * inv;
                 }
+                
+                _steps[i] = step;
             }
-            
-            /*var invA = 1f / parameters.LoadProfile.SceneProfiles.Length;
-            for (int i = 0; i < parameters.LoadProfile.SceneProfiles.Length; i++)
-            {
-                var sceneProfile = parameters.LoadProfile.SceneProfiles[i];
-                var invB = 1f / sceneProfile.Scenes.Length;
-                for (int j = 0; j < sceneProfile.Scenes.Length; j++)
-                {
-                    var scene = sceneProfile.Scenes[j];
-                    var handle = Addressables.LoadSceneAsync(scene.Asset, scene.LoadSceneMode);
-
-                    while (!handle.IsDone)
-                    {
-                        Progress += handle.PercentComplete * invA * invB;
-                        yield return null;
-                    }
-                    
-                    if (scene.SetActive)
-                        SceneManager.SetActiveScene(handle.Result.Scene);
-                }
-            }*/
 
             Progress = 1f;
             result?.Invoke(new IStepResult.Success());
