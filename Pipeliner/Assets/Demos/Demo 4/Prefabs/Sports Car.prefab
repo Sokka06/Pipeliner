@@ -5102,7 +5102,7 @@ WheelCollider:
   m_Radius: 0.3
   m_SuspensionSpring:
     spring: 50000
-    damper: 2500
+    damper: 5000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
@@ -5163,7 +5163,7 @@ WheelCollider:
   m_Radius: 0.3
   m_SuspensionSpring:
     spring: 50000
-    damper: 2500
+    damper: 5000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
@@ -5687,12 +5687,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd8e2f617be4f9448ba42885028e790d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vehicle: {fileID: 6320035508218620136}
+  Vehicle: {fileID: 138907738028056063}
   MinRPM: 1000
   MaxRPM: 8000
   Acceleration: 5000
   Friction: 0.5
   CutOffTime: 0.1
+--- !u!1 &4946841151436727829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5297366489566247136}
+  - component: {fileID: 3119336746469196535}
+  m_Layer: 0
+  m_Name: Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5297366489566247136
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4946841151436727829}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5271754694538821991}
+  m_Father: {fileID: 6320035508218620139}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3119336746469196535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4946841151436727829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 482d04e687346bc46ae43f04d5a8da46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Rigidbody: {fileID: 7901610043565441269}
+  Wheels:
+  - {fileID: 1075884438325242436}
+  - {fileID: 1387481534529564113}
+  - {fileID: 7798318679579464757}
+  - {fileID: 6654841687893299423}
+  Drive:
+    Speed: 20
+    Acceleration: 1
+  Brake:
+    Force: 10
+  Lean:
+    Speed: 5
+    Acceleration: 1
 --- !u!1 &5093051629882356792
 GameObject:
   m_ObjectHideFlags: 0
@@ -5841,7 +5899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89d91fb5fb4a0f641a7de39e7ca4ce81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vehicle: {fileID: 6320035508218620136}
+  Vehicle: {fileID: 138907738028056063}
   EngineSource: {fileID: 6695403840414909828}
 --- !u!1 &5374844713121347131
 GameObject:
@@ -5885,7 +5943,7 @@ WheelCollider:
   m_Radius: 0.3
   m_SuspensionSpring:
     spring: 50000
-    damper: 2500
+    damper: 5000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
@@ -5946,7 +6004,7 @@ WheelCollider:
   m_Radius: 0.3
   m_SuspensionSpring:
     spring: 50000
-    damper: 2500
+    damper: 5000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
@@ -6101,7 +6159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6320035508218620139}
-  - component: {fileID: 6320035508218620136}
+  - component: {fileID: 138907738028056063}
   - component: {fileID: 5164586687434472093}
   - component: {fileID: 7901610043565441269}
   - component: {fileID: 4254892877995782640}
@@ -6124,15 +6182,14 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
-  - {fileID: 5271754694538821991}
+  - {fileID: 5297366489566247136}
   - {fileID: 5974866722672156132}
   - {fileID: 6320035509019632590}
   - {fileID: 1994479412239184342}
-  - {fileID: 8373089995679654076}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &6320035508218620136
+--- !u!114 &138907738028056063
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6141,23 +6198,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6320035508218620141}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 482d04e687346bc46ae43f04d5a8da46, type: 3}
+  m_Script: {fileID: 11500000, guid: 51e4d7dc3ebc5684bb249a3f322792a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rigidbody: {fileID: 7901610043565441269}
-  Wheels:
-  - {fileID: 1075884438325242436}
-  - {fileID: 1387481534529564113}
-  - {fileID: 7798318679579464757}
-  - {fileID: 6654841687893299423}
-  Drive:
-    Speed: 20
-    Acceleration: 1
-  Brake:
-    Force: 10
-  Lean:
-    Speed: 5
-    Acceleration: 1
+  Controller: {fileID: 3119336746469196535}
+  Health: {fileID: 5164586687434472093}
 --- !u!114 &5164586687434472093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6249,6 +6294,7 @@ Transform:
   - {fileID: 8951524254295062545}
   - {fileID: 7555121302923531044}
   - {fileID: 5627738074127665878}
+  - {fileID: 8373089995679654076}
   m_Father: {fileID: 6320035508218620139}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6264,8 +6310,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f64a5d6b5a64c8949911bb1eaaef4d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Controller: {fileID: 6320035508218620136}
-  Root: {fileID: 7555121302923531044}
+  Vehicle: {fileID: 138907738028056063}
+  Effects:
+  - {fileID: 5548026347992880968}
 --- !u!1 &6624989048592420807
 GameObject:
   m_ObjectHideFlags: 0
@@ -6371,7 +6418,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7264979325149139122}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6379,7 +6426,7 @@ Transform:
   - {fileID: 6802411624454178341}
   - {fileID: 404002825001195946}
   - {fileID: 4461758436823753500}
-  m_Father: {fileID: 6320035508218620139}
+  m_Father: {fileID: 5297366489566247136}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7388102148153637410
@@ -6518,7 +6565,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8373089995679654076}
-  - component: {fileID: 1136780312954541228}
+  - component: {fileID: 5548026347992880968}
+  - component: {fileID: 6599785488307509573}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -6533,16 +6581,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7626137187507209841}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4674869226387247334}
   - {fileID: 5431713200386300236}
-  m_Father: {fileID: 6320035508218620139}
-  m_RootOrder: 4
+  m_Father: {fileID: 6320035509019632590}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1136780312954541228
+--- !u!114 &5548026347992880968
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6551,12 +6599,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 7626137187507209841}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92b3ea17eec2c9b4aabb443bf7d41834, type: 3}
+  m_Script: {fileID: 11500000, guid: df1768c091cd05d4a95f7d6ec6180f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ParticleSystem: {fileID: 4126031738655712054}
-  Source: {fileID: 6643881588379352831}
-  PlayTime: 5
+  Director: {fileID: 6599785488307509573}
+--- !u!320 &6599785488307509573
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7626137187507209841}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 5ea24ed7f06d6c1429f3b3287a43d8a5, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 2282966249134762728, guid: 5ea24ed7f06d6c1429f3b3287a43d8a5, type: 2}
+    value: {fileID: 6643881588379352831}
+  m_ExposedReferences:
+    m_References:
+    - 36e137a0952fa5140946fcda88961fb4: {fileID: 1376418702592288305}
 --- !u!1 &8260303395109636982
 GameObject:
   m_ObjectHideFlags: 0

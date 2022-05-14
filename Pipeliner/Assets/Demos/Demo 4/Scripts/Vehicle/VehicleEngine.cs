@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class VehicleEngine : MonoBehaviour
 {
-    public VehicleController Vehicle;
+    public Vehicle Vehicle;
 
     [Space]
     public float MinRPM = 1000f;
@@ -44,7 +44,7 @@ public class VehicleEngine : MonoBehaviour
         }
         else
         {
-            angularAcceleration = Vehicle.Inputs.Throttle * Acceleration * deltaTime;
+            angularAcceleration = Vehicle.Controller.Inputs.Throttle * Acceleration * deltaTime;
             _angularVelocity += angularAcceleration;
         }
 

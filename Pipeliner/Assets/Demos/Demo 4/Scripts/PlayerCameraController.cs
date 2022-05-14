@@ -8,7 +8,7 @@ public class PlayerCameraController : MonoBehaviour
 {
     public CinemachineVirtualCamera VirtualCamera;
     
-    public Transform Vehicle { get; private set; }
+    public Player Player { get; private set; }
 
     private void OnValidate()
     {
@@ -18,8 +18,13 @@ public class PlayerCameraController : MonoBehaviour
 
     private void Start()
     {
-        Vehicle = FindObjectOfType<VehicleController>().transform;
-        VirtualCamera.Follow = Vehicle;
-        VirtualCamera.LookAt = Vehicle;
+        Player = FindObjectOfType<Player>();
+        SetTarget(Player.Vehicle.transform);
+    }
+
+    public void SetTarget(Transform target)
+    {
+        VirtualCamera.Follow = target;
+        VirtualCamera.LookAt = target;
     }
 }

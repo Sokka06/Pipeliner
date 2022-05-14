@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class VehicleAudio : MonoBehaviour
 {
-    public VehicleController Vehicle;
+    public Vehicle Vehicle;
 
     [Space] 
     public AudioSource EngineSource;

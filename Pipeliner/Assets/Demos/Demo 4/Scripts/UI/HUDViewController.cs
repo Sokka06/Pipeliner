@@ -5,17 +5,9 @@ using UnityEngine;
 
 namespace Demos.Demo4
 {
-    public class HUDViewController : MonoBehaviour
+    public class HUDViewController : AbstractViewController
     {
-        public UIView View;
-
         private LevelController _levelController;
-        
-        private void OnValidate()
-        {
-            if (View == null)
-                View = GetComponent<UIView>();
-        }
 
         private void Awake()
         {
@@ -30,20 +22,13 @@ namespace Demos.Demo4
 
         private void OnLevelStateChanged((ILevelState previous, ILevelState current) obj)
         {
-            switch (obj.current)
+            if (obj.current is ILevelState.Started)
             {
-                case ILevelState.Default @default:
-                    break;
-                case ILevelState.Failed failed:
-                    break;
-                case ILevelState.Finished finished:
-                    View.Hide();
-                    break;
-                case ILevelState.Started started:
-                    View.Show();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                View.Show();
+            }
+            else
+            {
+                View.Hide();
             }
         }
     }

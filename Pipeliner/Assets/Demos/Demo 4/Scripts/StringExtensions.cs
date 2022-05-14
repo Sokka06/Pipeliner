@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace Demos.Vehicle
+namespace Demos.Demo4
 {
     public static class StringExtensions
     {

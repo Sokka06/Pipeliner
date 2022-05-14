@@ -6,7 +6,7 @@ using UnityEngine;
 public class Finish : MonoBehaviour
 {
     public Collider Trigger;
-    public Action<VehicleController> onFinish;
+    public Action<Vehicle> onFinish;
 
     private void OnValidate()
     {
@@ -16,7 +16,7 @@ public class Finish : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.attachedRigidbody.TryGetComponent<VehicleController>(out var vehicle))
+        if (!other.attachedRigidbody.TryGetComponent<Vehicle>(out var vehicle))
             return;
         
         onFinish?.Invoke(vehicle);

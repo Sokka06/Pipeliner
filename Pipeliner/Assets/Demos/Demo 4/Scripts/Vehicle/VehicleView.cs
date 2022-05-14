@@ -3,31 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VehicleView : MonoBehaviour
+namespace Demos.Demo4
 {
-    public VehicleController Controller;
-    public Transform Root;
-
-    private float _currentAngle;
-
-    private void Update()
+    public class VehicleView : MonoBehaviour
     {
-        var forward = Vector2.Perpendicular(-Controller.GroundData.Normal);
-        var velocity = Controller.Rigidbody.velocity.normalized;
-        
-        var targetAngle = 0f;
-        if (Controller.GroundData.HasGround)
+        public Vehicle Vehicle;
+
+        public AbstractViewEffect[] Effects;
+
+        private void Start()
         {
-            targetAngle = Mathf.Atan2(forward.y, forward.x);
-        }
-        else
-        {
-            targetAngle = Mathf.Atan2(velocity.y, velocity.x);
-            targetAngle = Mathf.Clamp(targetAngle, -60 * Mathf.Deg2Rad, 60 * Mathf.Deg2Rad);
+            Vehicle.State.OnStateChanged += OnVehicleStateChanged;
         }
 
-        _currentAngle = Mathf.Lerp(_currentAngle, targetAngle, 25f * Time.deltaTime);
-        
-        //Root.rotation = Quaternion.identity * Quaternion.AngleAxis(Mathf.Round(_currentAngle * Mathf.Rad2Deg), Vector3.forward);
+        private void OnDestroy()
+        {
+            Vehicle.State.OnStateChanged -= OnVehicleStateChanged;
+        }
+
+        private void OnVehicleStateChanged((IVehicleState previous, IVehicleState current) obj)
+        {
+            if (obj.current is IVehicleState.Dead)
+            {
+                for (int i = 0; i < Effects.Length; i++)
+                {
+                    Effects[i].Play();
+                }
+            }
+        }
     }
+
 }

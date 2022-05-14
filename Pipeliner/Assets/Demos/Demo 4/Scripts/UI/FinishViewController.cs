@@ -5,17 +5,9 @@ using UnityEngine;
 
 namespace Demos.Demo4
 {
-    public class FinishViewController : MonoBehaviour
+    public class FinishViewController : AbstractViewController
     {
-        public UIView View;
-
         private LevelController _levelController;
-
-        private void OnValidate()
-        {
-            if (View == null)
-                View = GetComponent<UIView>();
-        }
 
         private void Awake()
         {

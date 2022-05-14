@@ -10,11 +10,11 @@ public class SpeedometerUI : MonoBehaviour
 
     private VehicleEngine _engine;
     
-    public PlayerController Player { get; private set; }
+    public Player Player { get; private set; }
 
     private void Start()
     {
-        Player = FindObjectOfType<PlayerController>();
+        Player = FindObjectOfType<Player>();
         _engine = Player.Vehicle.GetComponentInChildren<VehicleEngine>();
     }
 

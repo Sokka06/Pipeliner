@@ -8,7 +8,7 @@ public class ProgressUI : MonoBehaviour
 {
     public Slider ProgressBar;
 
-    private PlayerController _player;
+    private Player _player;
     private Start _start;
     private Finish _finish;
 
@@ -16,7 +16,7 @@ public class ProgressUI : MonoBehaviour
 
     private void Start()
     {
-        _player = FindObjectOfType<PlayerController>();
+        _player = FindObjectOfType<Player>();
         _start = FindObjectOfType<Start>();
         _finish = FindObjectOfType<Finish>();
 
