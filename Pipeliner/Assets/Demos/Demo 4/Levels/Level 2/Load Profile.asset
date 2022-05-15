@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d659a673c63f578429fce149ba85f95a, type: 3}
+  m_Name: Load Profile
+  m_EditorClassIdentifier: 
+  Name: Level 2
+  SceneProfiles:
+  - {fileID: 11400000, guid: b2868574fee9d294cabc9fb77e04dcfd, type: 2}
+  - {fileID: 11400000, guid: ac70cbc2b8d53d5499fb9402535dfb1d, type: 2}
