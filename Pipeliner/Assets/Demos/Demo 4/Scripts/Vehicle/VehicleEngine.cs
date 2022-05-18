@@ -10,12 +10,14 @@ public class VehicleEngine : MonoBehaviour
     [Space]
     public float MinRPM = 1000f;
     public float MaxRPM = 8000f;
+    [Tooltip("Rev limiter cut off time when max RPM is exceeded.")]
+    public float CutOffTime = 0.1f;
+    
+    [Space]
     [Tooltip("How fast the engine accelerates.")]
     public float Acceleration = 5000f;
     [Tooltip("How fast the engine slows down when no throttle is applied.")]
     public float Friction = 0.5f;
-    [Tooltip("Rev limiter cut off time when max RPM is exceeded.")]
-    public float CutOffTime = 0.1f;
 
     private float _limiterTimer;
     
@@ -34,9 +36,6 @@ public class VehicleEngine : MonoBehaviour
     private void Update()
     {
         var deltaTime = Time.deltaTime;
-        //Debug.Log(CurrentRPM);
-
-        var angularAcceleration = 0f;
         
         if (_limiterTimer > 0f)
         {
@@ -44,12 +43,20 @@ public class VehicleEngine : MonoBehaviour
         }
         else
         {
-            angularAcceleration = Vehicle.Controller.Inputs.Throttle * Acceleration * deltaTime;
-            _angularVelocity += angularAcceleration;
+            if (Vehicle.Controller.GroundData.HasGround)
+            {
+                var targetAngularVelocity = Mathf.Lerp(MinRPM, MaxRPM, Vehicle.Controller.Rigidbody.velocity.magnitude / Vehicle.Controller.Drive.Speed) * RPM_TO_RADS;
+                _angularVelocity = targetAngularVelocity;
+            }
+            else
+            {
+                var angularAcceleration = Vehicle.Controller.Input.Inputs.Throttle * Acceleration * deltaTime;
+                _angularVelocity += angularAcceleration;
+            }
         }
-
-        if (!(angularAcceleration > 0f))
-            _angularVelocity *= 1f / (1f + Friction * deltaTime);
+        
+        // apply rotational friction if no angular velocity is added.
+        _angularVelocity *= 1f / (1f + Friction * deltaTime);
 
         CurrentRPM = Mathf.Max(_angularVelocity * RADS_TO_RPM, MinRPM);
         

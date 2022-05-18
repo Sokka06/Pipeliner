@@ -21,8 +21,6 @@ namespace Demos.Demo4
     
     public class LevelController : MonoBehaviour
     {
-        public LevelDataObject Data;
-
         private Player _player;
 
         public LevelFinishData FinishData { get; private set; }
@@ -37,7 +35,7 @@ namespace Demos.Demo4
 
         private void Start()
         {
-            State.SetState(new ILevelState.Default());
+            //State.SetState(new ILevelState.Default());
 
             _player = FindObjectOfType<Player>();
             _player.Vehicle.Health.onHealthMin += HealthOnonHealthMin;

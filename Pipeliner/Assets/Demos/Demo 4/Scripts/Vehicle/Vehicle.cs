@@ -27,17 +27,27 @@ public class Vehicle : MonoBehaviour
     private void Start()
     {
         Health.onHealthMin += OnHealthMin;
+        State.OnStateChanged += OnStateChanged;
     }
 
     private void OnDestroy()
     {
         Health.onHealthMin -= OnHealthMin;
+        State.OnStateChanged -= OnStateChanged;
     }
 
     private void OnHealthMin(int obj)
     {
         if (State.CurrentState is IVehicleState.Alive)
             State.SetState(new IVehicleState.Dead());
+    }
+    
+    private void OnStateChanged((IVehicleState previous, IVehicleState current) obj)
+    {
+        if (obj.current is IVehicleState.Dead)
+        {
+            Controller.Input.Enabled = false;
+        }
     }
 
     public void SetFreeze(bool value)

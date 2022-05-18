@@ -11,31 +11,141 @@ public struct GroundData
     public Vector3 Point;
 }
 
-public struct VehicleInputs
+public class VehicleInputs
 {
     public float Throttle;
     public float Brake;
     public float Lean;
 }
 
-[Serializable]
-public struct VehicleDrive
+public abstract class ControllerModule
 {
-    public float Speed;
-    public float Acceleration;
+    public bool Enabled = true;
+
+    public VehicleController Controller { get; private set; }
+
+    public virtual void SetupModule(VehicleController controller)
+    {
+        Controller = controller;
+    }
+
+    public abstract void UpdateModule(float deltaTime);
 }
 
 [Serializable]
-public struct VehicleBrake
+public class VehicleInput : ControllerModule
 {
+    public VehicleInputs Inputs { get; private set; }
+
+    public override void SetupModule(VehicleController controller)
+    {
+        base.SetupModule(controller);
+
+        Inputs = new VehicleInputs();
+    }
+
+    public void SetInputs(ref VehicleInputs inputs)
+    {
+        if (!Enabled)
+        {
+            inputs = new VehicleInputs();
+        }
+        
+        inputs.Throttle = Mathf.Clamp01(inputs.Throttle);
+        inputs.Brake = Mathf.Clamp01(inputs.Brake);
+        inputs.Lean = Mathf.Clamp(inputs.Lean, -1f, 1f);
+        
+        Inputs = inputs;
+    }
+    
+    public override void UpdateModule(float deltaTime)
+    {
+        /*if (!Enabled)
+        {
+            Inputs = new VehicleInputs();
+        }*/
+    }
+}
+
+[Serializable]
+public class VehicleDrive : ControllerModule
+{
+    [Space]
+    public float Speed;
+    public float Acceleration;
+    
+    public override void UpdateModule(float deltaTime)
+    {
+        if (!Enabled || !Controller.GroundData.HasGround || !(Controller.Input.Inputs.Throttle > 0f))
+            return;
+
+        var targetSpeed = Speed * Controller.Input.Inputs.Throttle;
+
+        for (int i = 0; i < Controller.Wheels.Length; i++)
+        {
+            var isGrounded = Controller.Wheels[i].GetGroundHit(out var wheelHit);
+                
+            if (!isGrounded)
+                continue;
+
+            var forward = wheelHit.forwardDir;
+            var velocity = Controller.PointVelocity(wheelHit.point);
+            var velocityDiff = forward * targetSpeed - velocity;
+            var force = velocityDiff * Acceleration;
+            
+            var load = Controller.Wheels[i].sprungMass;
+
+            Controller.Rigidbody.AddForceAtPosition(force * load, wheelHit.point);
+        }
+    }
+}
+
+[Serializable]
+public class VehicleBrake : ControllerModule
+{
+    [Space]
     public float Force;
+    
+    public override void UpdateModule(float deltaTime)
+    {
+        if (!Enabled || !Controller.GroundData.HasGround || !(Controller.Input.Inputs.Brake > 0f))
+            return;
+        
+        for (int i = 0; i < Controller.Wheels.Length; i++)
+        {
+            var isGrounded = Controller.Wheels[i].GetGroundHit(out var wheelHit);
+            if (!isGrounded)
+                continue;
+
+            var velocity = Controller.PointVelocity(wheelHit.point);
+                
+            var load = Controller.Wheels[i].sprungMass;
+            var force = Vector3.ClampMagnitude(-Vector3.ProjectOnPlane(velocity, wheelHit.normal), 1f) * load * Force * Controller.Input.Inputs.Brake;
+
+            Controller.Rigidbody.AddForceAtPosition(force, wheelHit.point);
+        }
+    }
 }
 
 [Serializable]
-public struct VehicleLean
+public class VehicleLean : ControllerModule
 {
+    [Space]
     public float Speed;
     public float Acceleration;
+    
+    public override void UpdateModule(float deltaTime)
+    {
+        if (!Enabled || !(Mathf.Abs(Controller.Input.Inputs.Lean) > 0f))
+            return;
+        
+        var axis = -Vector3.forward;
+        var force = Controller.Input.Inputs.Lean * Speed;
+        var velocity = Controller.Rigidbody.angularVelocity;
+        var velocityDiff = force - Vector3.Dot(velocity, axis);
+        var torque = velocityDiff * Acceleration;
+        Controller.Rigidbody.AddTorque(axis * torque * Controller.Rigidbody.mass);
+    }
 }
 
 public class VehicleController : MonoBehaviour
@@ -44,13 +154,12 @@ public class VehicleController : MonoBehaviour
     public WheelCollider[] Wheels;
 
     [Space] 
+    public VehicleInput Input = new VehicleInput();
     public VehicleDrive Drive = new VehicleDrive{Speed = 10f, Acceleration = 2f};
     public VehicleBrake Brake = new VehicleBrake{Force = 10f};
     public VehicleLean Lean = new VehicleLean{Speed = 10f, Acceleration = 1f};
     
     public GroundData GroundData { get; private set; }
-    public VehicleInputs Inputs { get; private set; }
-    
     public Collider[] LocalColliders { get; private set; }
         
     public Transform Transform => Rigidbody.transform;
@@ -87,6 +196,11 @@ public class VehicleController : MonoBehaviour
     private void Awake()
     {
         GroundData = new GroundData();
+        
+        Input.SetupModule(this);
+        Drive.SetupModule(this);
+        Brake.SetupModule(this);
+        Lean.SetupModule(this);
     }
 
     private void Start()
@@ -126,14 +240,10 @@ public class VehicleController : MonoBehaviour
         return colliders.ToArray();
     }
 
-    public void SetInputs(ref VehicleInputs inputs)
-    {
-        Inputs = inputs;
-    }
-
     private void FixedUpdate()
     {
         var deltaTime = Time.deltaTime;
+
         for (int i = 0; i < Wheels.Length; i++)
         {
             // Weird bug fix
@@ -146,9 +256,10 @@ public class VehicleController : MonoBehaviour
         ProbeGround(ref groundData);
         GroundData = groundData;
 
-        GetDrive();
-        GetBrake();
-        GetLean(deltaTime);
+        Input.UpdateModule(deltaTime);
+        Drive.UpdateModule(deltaTime);
+        Brake.UpdateModule(deltaTime);
+        Lean.UpdateModule(deltaTime);
     }
     
     private void ProbeGround(ref GroundData groundData)
@@ -208,64 +319,6 @@ public class VehicleController : MonoBehaviour
             closest = results[i].distance;
         }
     }*/
-
-    private void GetDrive()
-    {
-        if (!GroundData.HasGround || !(Inputs.Throttle > 0f))
-            return;
-
-        var targetSpeed = Drive.Speed * Inputs.Throttle;
-
-        for (int i = 0; i < Wheels.Length; i++)
-        {
-            var isGrounded = Wheels[i].GetGroundHit(out var wheelHit);
-                
-            if (!isGrounded)
-                continue;
-
-            var forward = wheelHit.forwardDir;
-            var velocity = PointVelocity(wheelHit.point);
-            var velocityDiff = forward * targetSpeed - velocity;
-            var force = velocityDiff * Drive.Acceleration;
-            
-            var load = Wheels[i].sprungMass;
-
-            Rigidbody.AddForceAtPosition(force * load, wheelHit.point);
-        }
-    }
-    
-    private void GetBrake()
-    {
-        if (!GroundData.HasGround || !(Inputs.Brake > 0f))
-            return;
-        
-        for (int i = 0; i < Wheels.Length; i++)
-        {
-            var isGrounded = Wheels[i].GetGroundHit(out var wheelHit);
-            if (!isGrounded)
-                continue;
-
-            var velocity = PointVelocity(wheelHit.point);
-                
-            var load = Wheels[i].sprungMass;
-            var force = Vector3.ClampMagnitude(-Vector3.ProjectOnPlane(velocity, wheelHit.normal), 1f) * load * Brake.Force * Inputs.Brake;
-
-            Rigidbody.AddForceAtPosition(force, wheelHit.point);
-        }
-    }
-
-    private void GetLean(float deltaTime)
-    {
-        if (!(Mathf.Abs(Inputs.Lean) > 0f))
-            return;
-        
-        var axis = -Vector3.forward;
-        var force = Inputs.Lean * Lean.Speed;
-        var velocity = Rigidbody.angularVelocity;
-        var velocityDiff = force - Vector3.Dot(velocity, axis);
-        var torque = velocityDiff * Lean.Acceleration;
-        Rigidbody.AddTorque(axis * torque * Rigidbody.mass);
-    }
 
     private void OnDrawGizmos()
     {

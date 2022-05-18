@@ -55,6 +55,6 @@ public class PlayerInputController : MonoBehaviour
             Lean = lean
         };
         
-        Vehicle.SetInputs(ref vehicleInputs);
+        Vehicle.Input.SetInputs(ref vehicleInputs);
     }
 }

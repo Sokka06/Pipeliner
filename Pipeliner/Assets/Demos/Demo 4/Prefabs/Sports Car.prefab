@@ -884,6 +884,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Vehicle: {fileID: 138907738028056063}
+  Gears:
+  - Ratio: 3.75
+  - Ratio: 2
+  - Ratio: 1.34
+  - Ratio: 1
+  - Ratio: 0.77
+  - Ratio: 0.63
   MinRPM: 1000
   MaxRPM: 8000
   Acceleration: 5000
@@ -1713,11 +1720,12 @@ PlayableDirector:
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
-  - key: {fileID: 2282966249134762728, guid: 5ea24ed7f06d6c1429f3b3287a43d8a5, type: 2}
+  - key: {fileID: 2361797816492062743, guid: 5ea24ed7f06d6c1429f3b3287a43d8a5, type: 2}
     value: {fileID: 6643881588379352831}
   m_ExposedReferences:
     m_References:
     - 6494a9586505be741b0947345b4b8c28: {fileID: 6135086937618218171}
+    - 7c263209dd3e7304098df53f908796f9: {fileID: 3701746286529612584}
     - 36e137a0952fa5140946fcda88961fb4: {fileID: 0}
 --- !u!1 &8260303395109636982
 GameObject:

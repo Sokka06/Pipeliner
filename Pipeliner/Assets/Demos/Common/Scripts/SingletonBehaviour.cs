@@ -8,6 +8,8 @@ using UnityEngine;
 /// <typeparam name="T"></typeparam>
 public abstract class SingletonBehaviour<T> : MonoBehaviour where T : Component
 {
+    public bool DontDestroyOnLoad = true;
+    
     #region Fields
 
     /// <summary>
@@ -55,7 +57,9 @@ public abstract class SingletonBehaviour<T> : MonoBehaviour where T : Component
         if ( instance == null )
         {
             instance = this as T;
-            DontDestroyOnLoad ( gameObject );
+            
+            if(DontDestroyOnLoad)
+                DontDestroyOnLoad ( gameObject );
         }
         else
         {
