@@ -4,31 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RestartButton : MonoBehaviour
+namespace Demos.Demo4
 {
-    public Button Button;
-
-    private LoadManager _loadManager;
-    private Level _level;
-
-    private void Start()
+    public class RestartButton : MonoBehaviour
     {
-        _loadManager = LoadManager.Instance;
-        _level = Level.Instance;
-    }
+        public Button Button;
 
-    private void OnEnable()
-    {
-        Button.onClick.AddListener(OnButtonClicked);
-    }
+        private LoadManager _loadManager;
+        private Level _level;
 
-    private void OnDisable()
-    {
-        Button.onClick.RemoveListener(OnButtonClicked);
-    }
+        private void Start()
+        {
+            _loadManager = LoadManager.Instance;
+            _level = Level.Instance;
+        }
 
-    private void OnButtonClicked()
-    {
-        _loadManager.Load(_level.LevelData.Data.Profile);
+        private void OnEnable()
+        {
+            Button.onClick.AddListener(OnButtonClicked);
+        }
+
+        private void OnDisable()
+        {
+            Button.onClick.RemoveListener(OnButtonClicked);
+        }
+
+        private void OnButtonClicked()
+        {
+            _loadManager.Load(_level.LevelData.Data.Profile);
+        }
     }
 }

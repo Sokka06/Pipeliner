@@ -4,30 +4,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoadButton : MonoBehaviour
+namespace Demos.Demo4
 {
-    public LoadProfile Profile;
-    public Button Button;
-
-    private LoadManager _loadManager;
-
-    private void Start()
+    public class LoadButton : MonoBehaviour
     {
-        _loadManager = LoadManager.Instance;
-    }
+        public LoadProfile Profile;
+        public Button Button;
 
-    private void OnEnable()
-    {
-        Button.onClick.AddListener(OnButtonClicked);
-    }
+        private LoadManager _loadManager;
 
-    private void OnDisable()
-    {
-        Button.onClick.RemoveListener(OnButtonClicked);
-    }
+        private void Start()
+        {
+            _loadManager = LoadManager.Instance;
+        }
 
-    private void OnButtonClicked()
-    {
-        _loadManager.Load(Profile);
+        private void OnEnable()
+        {
+            Button.onClick.AddListener(OnButtonClicked);
+        }
+
+        private void OnDisable()
+        {
+            Button.onClick.RemoveListener(OnButtonClicked);
+        }
+
+        private void OnButtonClicked()
+        {
+            _loadManager.Load(Profile);
+        }
     }
 }

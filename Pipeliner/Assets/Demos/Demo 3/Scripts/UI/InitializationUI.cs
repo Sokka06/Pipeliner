@@ -6,66 +6,63 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InitializationUI : MonoBehaviour
+namespace Demos.Demo3
 {
-    public UIView View;
-    public PipelineRunnerBehaviour RunnerBehaviour;
-
-    [Space] 
-    public Slider ProgressBar;
-    public TextMeshProUGUI StepText;
-    
-    private void Awake()
+    public class InitializationUI : MonoBehaviour
     {
-        View.State.OnStateChanged += OnViewStateChanged;
-    }
+        public UIView View;
+        public PipelineRunnerBehaviour RunnerBehaviour;
     
-    private void OnDestroy()
-    {
-        View.State.OnStateChanged -= OnViewStateChanged;
-    }
-    
-    private void OnEnable()
-    {
+        [Space] 
+        public Slider ProgressBar;
+        public TextMeshProUGUI StepText;
         
-    }
-    
-    private void OnViewStateChanged((IViewState previous, IViewState current) state)
-    {
-        // Used with Bolt/Visual Scripting
-        if (state.current is IViewState.Visible)
+        private void Awake()
         {
-            var result = default(IPipelineResult);
-            RunnerBehaviour.Run(value =>
+            View.State.OnStateChanged += OnViewStateChanged;
+        }
+        
+        private void OnDestroy()
+        {
+            View.State.OnStateChanged -= OnViewStateChanged;
+        }
+
+        private void OnViewStateChanged((IViewState previous, IViewState current) state)
+        {
+            if (state.current is IViewState.Visible)
             {
-                result = value;
-                View.Manager.GetView("Finish View").Show();
-                View.Hide();
-            });
+                var result = default(IPipelineResult);
+                RunnerBehaviour.Run(value =>
+                {
+                    result = value;
+                    View.Manager.GetView("Finish View").Show();
+                    View.Hide();
+                });
+            }
         }
-    }
-
-    private void LateUpdate()
-    {
-        if (RunnerBehaviour.Runner != null)
+    
+        private void LateUpdate()
         {
-            ProgressBar.value = RunnerBehaviour.Runner.Progress;
-            StepText.SetText(GetStepDescription(RunnerBehaviour.Runner.Pipeline.Steps[RunnerBehaviour.Runner.StepIndex]));
+            if (RunnerBehaviour.Runner != null)
+            {
+                ProgressBar.value = RunnerBehaviour.Runner.Progress;
+                StepText.SetText(GetStepDescription(RunnerBehaviour.Runner.Pipeline.Steps[RunnerBehaviour.Runner.StepIndex]));
+            }
         }
-    }
-
-    private string GetStepDescription(IStep step)
-    {
-        switch (step)
+    
+        private string GetStepDescription(IStep step)
         {
-            case PlayServicesStep playServices:
-                return "Google Play Services...";
-            case FirebaseStep firebase:
-                return "Firebase...";
-            case LoadDataStep<GameData> userData:
-                return $"Save Data...";
-            default:
-                return "";
+            switch (step)
+            {
+                case PlayServicesStep playServices:
+                    return "Google Play Services...";
+                case FirebaseStep firebase:
+                    return "Firebase...";
+                case LoadDataStep<GameData> userData:
+                    return $"Save Data...";
+                default:
+                    return "";
+            }
         }
     }
 }

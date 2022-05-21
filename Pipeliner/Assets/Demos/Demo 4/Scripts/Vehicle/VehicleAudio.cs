@@ -5,92 +5,95 @@ using Demos.Common;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[Serializable]
-public struct EngineAudio
+namespace Demos.Demo4
 {
-    public AudioSource Source;
-
-    [Space] 
-    public float MinVolume;
-    public float MaxVolume;
-
-    [Space] 
-    public float MinPitch;
-    public float MaxPitch;
-}
-
-[Serializable]
-public struct CollisionAudio
-{
-    public AudioSource Source;
-    public AudioClip[] Clips;
-    
-    [Space]
-    public float MinImpulse;
-    public float MaxImpulse;
-}
-
-public class VehicleAudio : MonoBehaviour, ICollisionCallbacks
-{
-    public Vehicle Vehicle;
-
-    [Space] 
-    public EngineAudio Engine = new EngineAudio{MinVolume = 0.25f, MaxVolume = 1f, MinPitch = 0.5f, MaxPitch = 1.5f};
-    public CollisionAudio Collision = new CollisionAudio{MinImpulse = 1f, MaxImpulse = 10f};
-
-    private CollisionListener _collisionListener;
-    private VehicleEngine _engine;
-    private float _invFixedDeltaTime;
-
-    private void Awake()
+    [Serializable]
+    public struct EngineAudio
     {
-        _collisionListener = Vehicle.GetComponent<CollisionListener>();
-        _engine = Vehicle.GetComponentInChildren<VehicleEngine>();
+        public AudioSource Source;
+
+        [Space] 
+        public float MinVolume;
+        public float MaxVolume;
+
+        [Space] 
+        public float MinPitch;
+        public float MaxPitch;
+    }
+
+    [Serializable]
+    public struct CollisionAudio
+    {
+        public AudioSource Source;
+        public AudioClip[] Clips;
         
-        _invFixedDeltaTime = 1f / Time.fixedDeltaTime;
+        [Space]
+        public float MinImpulse;
+        public float MaxImpulse;
     }
 
-    private void Start()
+    public class VehicleAudio : MonoBehaviour, ICollisionCallbacks
     {
-        _collisionListener.Register(this);
-    }
+        public Vehicle Vehicle;
 
-    private void OnDestroy()
-    {
-        _collisionListener.Unregister(this);
-    }
+        [Space] 
+        public EngineAudio Engine = new EngineAudio{MinVolume = 0.25f, MaxVolume = 1f, MinPitch = 0.5f, MaxPitch = 1.5f};
+        public CollisionAudio Collision = new CollisionAudio{MinImpulse = 1f, MaxImpulse = 10f};
 
-    private void LateUpdate()
-    {
-        var engineNormalized = Mathf.InverseLerp(_engine.MinRPM, _engine.MaxRPM, _engine.CurrentRPM);
-        Engine.Source.volume = Mathf.Lerp(Engine.MinVolume, Engine.MaxVolume, engineNormalized);
-        Engine.Source.pitch = Mathf.Lerp(Engine.MinPitch, Engine.MaxPitch, engineNormalized);
-    }
+        private CollisionListener _collisionListener;
+        private VehicleEngine _engine;
+        private float _invFixedDeltaTime;
 
-    public void CollisionEnter(Collision other)
-    {
-        var impulse = (other.impulse).magnitude * _invFixedDeltaTime;
-        var mass = Vehicle.Controller.Rigidbody.mass;
-        var min = Collision.MinImpulse * mass * _invFixedDeltaTime;
-        var max = Collision.MaxImpulse * mass * _invFixedDeltaTime;
+        private void Awake()
+        {
+            _collisionListener = Vehicle.GetComponent<CollisionListener>();
+            _engine = Vehicle.GetComponentInChildren<VehicleEngine>();
             
-        if (!(Collision.Clips.Length > 0) || impulse < min)
-            return;
+            _invFixedDeltaTime = 1f / Time.fixedDeltaTime;
+        }
 
-        var volume = Mathf.InverseLerp(min, max, impulse);
+        private void Start()
+        {
+            _collisionListener.Register(this);
+        }
 
-        var clip = Collision.Clips[Random.Range(0, Collision.Clips.Length)];
-        Collision.Source.transform.position = other.GetContact(0).point;
-        Collision.Source.PlayOneShot(clip, volume);
-    }
+        private void OnDestroy()
+        {
+            _collisionListener.Unregister(this);
+        }
 
-    public void CollisionStay(Collision other)
-    {
-        
-    }
+        private void LateUpdate()
+        {
+            var engineNormalized = Mathf.InverseLerp(_engine.MinRPM, _engine.MaxRPM, _engine.CurrentRPM);
+            Engine.Source.volume = Mathf.Lerp(Engine.MinVolume, Engine.MaxVolume, engineNormalized);
+            Engine.Source.pitch = Mathf.Lerp(Engine.MinPitch, Engine.MaxPitch, engineNormalized);
+        }
 
-    public void CollisionExit(Collision other)
-    {
-        
+        public void CollisionEnter(Collision other)
+        {
+            var impulse = (other.impulse).magnitude * _invFixedDeltaTime;
+            var mass = Vehicle.Controller.Rigidbody.mass;
+            var min = Collision.MinImpulse * mass * _invFixedDeltaTime;
+            var max = Collision.MaxImpulse * mass * _invFixedDeltaTime;
+                
+            if (!(Collision.Clips.Length > 0) || impulse < min)
+                return;
+
+            var volume = Mathf.InverseLerp(min, max, impulse);
+
+            var clip = Collision.Clips[Random.Range(0, Collision.Clips.Length)];
+            Collision.Source.transform.position = other.GetContact(0).point;
+            Collision.Source.PlayOneShot(clip, volume);
+        }
+
+        public void CollisionStay(Collision other)
+        {
+            
+        }
+
+        public void CollisionExit(Collision other)
+        {
+            
+        }
     }
 }

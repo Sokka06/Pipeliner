@@ -5,37 +5,40 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LevelButton : MonoBehaviour
+namespace Demos.Demo4
 {
-    public Button Button;
-    public TextMeshProUGUI NameText;
-
-    private LevelDataObject _levelData;
-
-    public event Action<LevelDataObject> onButtonClicked; 
-
-    public LevelDataObject LevelData
+    public class LevelButton : MonoBehaviour
     {
-        get => _levelData;
-        set
+        public Button Button;
+        public TextMeshProUGUI NameText;
+
+        private LevelDataObject _levelData;
+
+        public event Action<LevelDataObject> onButtonClicked; 
+
+        public LevelDataObject LevelData
         {
-            _levelData = value;
-            NameText.SetText(value.Data.Name);
+            get => _levelData;
+            set
+            {
+                _levelData = value;
+                NameText.SetText(value.Data.Name);
+            }
         }
-    }
 
-    private void OnEnable()
-    {
-        Button.onClick.AddListener(OnButtonClicked);
-    }
+        private void OnEnable()
+        {
+            Button.onClick.AddListener(OnButtonClicked);
+        }
 
-    private void OnDisable()
-    {
-        Button.onClick.RemoveListener(OnButtonClicked);
-    }
+        private void OnDisable()
+        {
+            Button.onClick.RemoveListener(OnButtonClicked);
+        }
 
-    private void OnButtonClicked()
-    {
-        onButtonClicked?.Invoke(LevelData);
+        private void OnButtonClicked()
+        {
+            onButtonClicked?.Invoke(LevelData);
+        }
     }
 }

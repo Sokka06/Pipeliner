@@ -5,17 +5,20 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
-[Serializable]
-public struct AddressableScene
+namespace Demos.Demo4
 {
-    public bool SetActive;
-    public LoadSceneMode LoadSceneMode;
-    public AssetReference Asset;
-
-    public AddressableScene(bool setActive = false, LoadSceneMode loadSceneMode = LoadSceneMode.Additive, AssetReference asset = default)
+    [Serializable]
+    public struct AddressableScene
     {
-        SetActive = setActive;
-        LoadSceneMode = loadSceneMode;
-        Asset = asset;
+        public bool SetActive;
+        public LoadSceneMode LoadSceneMode;
+        public AssetReference Asset;
+
+        public AddressableScene(bool setActive = false, LoadSceneMode loadSceneMode = LoadSceneMode.Additive, AssetReference asset = default)
+        {
+            SetActive = setActive;
+            LoadSceneMode = loadSceneMode;
+            Asset = asset;
+        }
     }
 }

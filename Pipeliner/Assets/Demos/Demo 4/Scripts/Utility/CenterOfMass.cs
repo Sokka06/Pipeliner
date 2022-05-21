@@ -3,19 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CenterOfMass : MonoBehaviour
+namespace Demos.Demo4
 {
-    public Rigidbody Rigidbody;
-    public Vector3 CoM;
+    public class CenterOfMass : MonoBehaviour
+    {
+        public Rigidbody Rigidbody;
+        public Vector3 CoM;
     
-    private void OnValidate()
-    {
-        if (Rigidbody == null)
-            Rigidbody = GetComponent<Rigidbody>();
-    }
+        private void OnValidate()
+        {
+            if (Rigidbody == null)
+                Rigidbody = GetComponent<Rigidbody>();
+        }
 
-    private void Start()
-    {
-        Rigidbody.centerOfMass = CoM;
+        private void Start()
+        {
+            Rigidbody.centerOfMass = CoM;
+        }
     }
 }

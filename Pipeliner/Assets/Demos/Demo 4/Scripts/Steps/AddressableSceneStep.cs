@@ -8,50 +8,53 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
-public struct AddressableSceneStepParameters : IStepParameters
+namespace Demos.Demo4
 {
-    public AddressableScene Scene;
-
-    public AddressableSceneStepParameters(AddressableScene scene)
+    public struct AddressableSceneStepParameters : IStepParameters
     {
-        Scene = scene;
-    }
-}
+        public AddressableScene Scene;
 
-/// <summary>
-/// Loads an Addressable Scene.
-/// </summary>
-public class AddressableSceneStep : AbstractStep
-{
-    public AddressableSceneStep(AddressableSceneStepParameters parameters) : base(parameters)
-    {
+        public AddressableSceneStepParameters(AddressableScene scene)
+        {
+            Scene = scene;
+        }
     }
 
-    private AsyncOperationHandle<SceneInstance> _handle;
-
-    public override IEnumerator Run(Action<IStepResult> result)
+    /// <summary>
+    /// Loads an Addressable Scene.
+    /// </summary>
+    public class AddressableSceneStep : AbstractStep
     {
-        base.Run(result);
-
-        var parameters = (AddressableSceneStepParameters)Parameters;
-        
-        if (!parameters.Scene.Asset.RuntimeKeyIsValid())
+        public AddressableSceneStep(AddressableSceneStepParameters parameters) : base(parameters)
         {
-            Debug.Log("No Addressable Scene set.");
-        }
-        
-        _handle = Addressables.LoadSceneAsync(parameters.Scene.Asset, parameters.Scene.LoadSceneMode);
-
-        while (!_handle.IsDone)
-        {
-            Progress = _handle.PercentComplete / 0.9f;
-            yield return null;
         }
 
-        if (parameters.Scene.SetActive)
-            SceneManager.SetActiveScene(_handle.Result.Scene);
+        private AsyncOperationHandle<SceneInstance> _handle;
 
-        Progress = 1f;
-        result?.Invoke(new IStepResult.Success());
+        public override IEnumerator Run(Action<IStepResult> result)
+        {
+            base.Run(result);
+
+            var parameters = (AddressableSceneStepParameters)Parameters;
+        
+            if (!parameters.Scene.Asset.RuntimeKeyIsValid())
+            {
+                Debug.Log("No Addressable Scene set.");
+            }
+        
+            _handle = Addressables.LoadSceneAsync(parameters.Scene.Asset, parameters.Scene.LoadSceneMode);
+
+            while (!_handle.IsDone)
+            {
+                Progress = _handle.PercentComplete / 0.9f;
+                yield return null;
+            }
+
+            if (parameters.Scene.SetActive)
+                SceneManager.SetActiveScene(_handle.Result.Scene);
+
+            Progress = 1f;
+            result?.Invoke(new IStepResult.Success());
+        }
     }
 }
