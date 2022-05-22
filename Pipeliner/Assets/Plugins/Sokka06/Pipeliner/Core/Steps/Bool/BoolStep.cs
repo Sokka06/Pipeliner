@@ -16,22 +16,19 @@ namespace Sokka06.Pipeliner
     /// </summary>
     public class BoolStep : AbstractStep
     {
-        public BoolStep(IStepParameters parameters) : base(parameters)
+        public BoolStep(BoolStepParameters parameters) : base(parameters)
         {
         }
         
         public override IEnumerator Run(Action<IStepResult> result)
         {
-            yield return base.Run(result);
-
+            yield return null;
             var parameters = (BoolStepParameters)Parameters;
-            
-            if (!parameters.Boolean)
-            {
-                result?.Invoke(new IStepResult.Failed());
-            }
-            
+
+            var stepResult = parameters.Boolean ? new IStepResult.Success() as IStepResult : new IStepResult.Failed() as IStepResult;
+
             Progress = 1f;
+            result?.Invoke(stepResult);
         }
     }
 }

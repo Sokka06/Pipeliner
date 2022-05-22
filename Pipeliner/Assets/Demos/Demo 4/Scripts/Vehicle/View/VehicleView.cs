@@ -13,12 +13,12 @@ namespace Demos.Demo4
 
         private void Start()
         {
-            Vehicle.State.OnStateChanged += OnVehicleStateChanged;
+            Vehicle.State.onStateChanged += OnVehicleStateChanged;
         }
 
         private void OnDestroy()
         {
-            Vehicle.State.OnStateChanged -= OnVehicleStateChanged;
+            Vehicle.State.onStateChanged -= OnVehicleStateChanged;
         }
 
         private void OnVehicleStateChanged((IVehicleState previous, IVehicleState current) obj)

@@ -33,8 +33,6 @@ namespace Demos.Demo4
 
         public override IEnumerator Run(Action<IStepResult> result)
         {
-            base.Run(result);
-
             var parameters = (AddressableSceneStepParameters)Parameters;
         
             if (!parameters.Scene.Asset.RuntimeKeyIsValid())

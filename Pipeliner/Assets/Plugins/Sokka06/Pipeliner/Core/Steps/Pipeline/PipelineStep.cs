@@ -23,8 +23,7 @@ namespace Sokka06.Pipeliner
 
         public override IEnumerator Run(Action<IStepResult> result)
         {
-            yield return base.Run(result);
-
+            yield return null;
             var stepResult = new IStepResult.Default() as IStepResult;
 
             var parameters = (PipelineStepParameters)Parameters;

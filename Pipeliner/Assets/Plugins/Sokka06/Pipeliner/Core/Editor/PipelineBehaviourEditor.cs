@@ -41,13 +41,13 @@ namespace Sokka06.Pipeliner
             var steps = _target.FindSteps();
             
             // Compare steps. Could also use LINQ SequenceEqual
-            if (_target.Steps.Count != steps.Length)
+            if (_target.Steps.Length != steps.Length)
             {
                 hasChanged = true;
             }
             else
             {
-                for (int i = 0; i < _target.Steps.Count; i++)
+                for (int i = 0; i < _target.Steps.Length; i++)
                 {
                     if (_target.Steps[i].GetHashCode() == steps[i].GetHashCode())
                         continue;
@@ -110,7 +110,7 @@ namespace Sokka06.Pipeliner
 
         private void UpdateSteps(StepFactoryBehaviour[] steps)
         {
-            _target.Steps = new List<StepFactoryBehaviour>(steps);
+            _target.Steps = steps;
             EditorUtility.SetDirty(target);
         }
     }

@@ -10,10 +10,6 @@ namespace Sokka06.Pipeliner
         public struct Idle : IPipelineRunnerState { }
         public struct Running : IPipelineRunnerState { }
         public struct Finished : IPipelineRunnerState { }
-
-        /*public struct Failed : IPipelineState { }
-        public struct Success : IPipelineState { }
-        public struct Aborted : IPipelineState { }*/
     }
 
     [Serializable]
@@ -66,24 +62,24 @@ namespace Sokka06.Pipeliner
             
             for (int i = 0; i < Pipeline.Steps.Length; i++)
             {
-                var stepResult = default(IStepResult);
-                
                 StepIndex = i;
                 var currentStep = Pipeline.Steps[StepIndex];
                 
                 Logger.Log($"Running Step: {currentStep.GetType().Name}");
                 
+                var stepResult = default(IStepResult);
                 var e = currentStep.Run(value => stepResult = value);
-                while (e.MoveNext() && !_abortRequested)
+                while (e.MoveNext())
                 {
+                    if (_abortRequested)
+                    {
+                        currentStep.OnAbort();
+                        stepResult = new IStepResult.Aborted();
+                        break;
+                    }
+                    
                     yield return e.Current;
                     CalculateTotalProgress();
-                }
-
-                if (_abortRequested)
-                {
-                    currentStep.OnAbort();
-                    stepResult = new IStepResult.Aborted();
                 }
 
                 Logger.Log($"Finished Step: {currentStep.GetType().Name}, {stepResult.GetType().Name}");
@@ -92,18 +88,21 @@ namespace Sokka06.Pipeliner
             }
             
             Progress = 1f;
-            
+
             if (_abortRequested)
+            {
                 result = new IPipelineResult.Aborted(stepResults);
+                _abortRequested = false;
+            }
 
             if (result is IPipelineResult.Default)
                 result = new IPipelineResult.Success(stepResults);
 
             Result = result;
             State.SetState(new IPipelineRunnerState.Finished());
-            pipelineResult?.Invoke(result);
+            pipelineResult?.Invoke(Result);
             
-            Logger.Log($"Finished Pipeline, {result.GetType().Name}");
+            Logger.Log($"Finished Pipeline, {Result.GetType().Name}");
         }
         
         /// <summary>
@@ -111,7 +110,8 @@ namespace Sokka06.Pipeliner
         /// </summary>
         public void Abort()
         {
-            _abortRequested = true;
+            if (State.CurrentState is IPipelineRunnerState.Running)
+                _abortRequested = true;
         }
         
         /// <summary>

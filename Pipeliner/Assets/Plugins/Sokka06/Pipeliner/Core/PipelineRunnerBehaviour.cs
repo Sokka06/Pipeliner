@@ -23,7 +23,7 @@ namespace Sokka06.Pipeliner
 
         public event Action<IPipelineResult> onPipelineFinished;
 
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
             if (Pipeline != null)
             {

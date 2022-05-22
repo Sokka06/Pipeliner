@@ -11,7 +11,7 @@ namespace Sokka06.Pipeliner
     [AddComponentMenu("Pipeliner/Pipeline")]
     public class PipelineBehaviour : MonoBehaviour, IPipelineFactory
     {
-        public List<StepFactoryBehaviour> Steps = new List<StepFactoryBehaviour>();
+        public StepFactoryBehaviour[] Steps = Array.Empty<StepFactoryBehaviour>();
 
         public virtual StepFactoryBehaviour[] FindSteps()
         {
@@ -21,7 +21,7 @@ namespace Sokka06.Pipeliner
         public virtual Pipeline Create()
         {
             var steps = new List<IStep>();
-            for (int i = 0; i < Steps.Count; i++)
+            for (int i = 0; i < Steps.Length; i++)
             {
                 steps.AddRange(Steps[i].Create());
             }

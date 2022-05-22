@@ -15,8 +15,6 @@ namespace Demos.Demo3
 
         public override IEnumerator Run(Action<IStepResult> result)
         {
-            base.Run(result);
-            
             FakeFirebase.Instance.Initialize();
             while (!FakeFirebase.Instance.IsInitialized)
             {

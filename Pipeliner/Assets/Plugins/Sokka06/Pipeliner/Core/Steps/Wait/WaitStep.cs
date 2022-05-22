@@ -27,8 +27,6 @@ namespace Sokka06.Pipeliner
         
         public override IEnumerator Run(Action<IStepResult> result)
         {
-            yield return base.Run(result);
-
             var stepResult = new IStepResult.Default() as IStepResult;
 
             var parameters = (WaitParameters)Parameters;
@@ -37,9 +35,9 @@ namespace Sokka06.Pipeliner
 
             while (waitTime > 0f)
             {
-                waitTime -= Time.fixedDeltaTime;
+                waitTime -= Time.deltaTime;
                 Progress = 1f - waitTime / parameters.WaitTime;
-                yield return new WaitForFixedUpdate();
+                yield return null;
             }
             
             Progress = 1f;

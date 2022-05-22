@@ -24,14 +24,13 @@ namespace Sokka06.Pipeliner
     /// </summary>
     public class DebugLogStep : AbstractStep
     {
-        public DebugLogStep(IStepParameters parameters) : base(parameters)
+        public DebugLogStep(DebugLogParameters parameters) : base(parameters)
         {
         }
         
         public override IEnumerator Run(Action<IStepResult> result)
         {
-            yield return base.Run(result);
-
+            yield return null;
             var parameters = (DebugLogParameters)Parameters;
             
             switch (parameters.Type)
@@ -48,8 +47,9 @@ namespace Sokka06.Pipeliner
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
             Progress = 1f;
+            result?.Invoke(new IStepResult.Success());
         }
     }
 }

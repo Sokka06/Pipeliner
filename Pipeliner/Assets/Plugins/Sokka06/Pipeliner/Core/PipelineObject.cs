@@ -11,12 +11,12 @@ namespace Sokka06.Pipeliner
     [CreateAssetMenu(fileName = "Pipeline", menuName = "Pipeliner/Pipeline", order = -1)]
     public class PipelineObject : ScriptableObject, IPipelineFactory
     {
-        public List<StepFactoryObject> Steps;
+        public StepFactoryObject[] Steps;
 
         public virtual Pipeline Create()
         {
             var steps = new List<IStep>();
-            for (int i = 0; i < Steps.Count; i++)
+            for (int i = 0; i < Steps.Length; i++)
             {
                 steps.AddRange(Steps[i].Create());
             }

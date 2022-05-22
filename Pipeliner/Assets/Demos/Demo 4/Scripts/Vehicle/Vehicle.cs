@@ -30,13 +30,13 @@ namespace Demos.Demo4
         private void Start()
         {
             Health.onHealthMin += OnHealthMin;
-            State.OnStateChanged += OnStateChanged;
+            State.onStateChanged += OnStateChanged;
         }
     
         private void OnDestroy()
         {
             Health.onHealthMin -= OnHealthMin;
-            State.OnStateChanged -= OnStateChanged;
+            State.onStateChanged -= OnStateChanged;
         }
     
         private void OnHealthMin(int obj)

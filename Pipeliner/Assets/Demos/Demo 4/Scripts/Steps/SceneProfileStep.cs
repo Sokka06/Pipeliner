@@ -30,8 +30,6 @@ namespace Demos.Demo4
 
         public override IEnumerator Run(Action<IStepResult> result)
         {
-            base.Run(result);
-
             var parameters = (SceneProfileStepParameters)Parameters;
 
             var inv = 1f / parameters.Profile.Scenes.Length;

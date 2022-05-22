@@ -20,8 +20,6 @@ namespace Demos.Demo3
 
         public override IEnumerator Run(Action<IStepResult> result)
         {
-            base.Run(result);
-            
             FakePlayServices.Instance.Initialize();
     
             while (!FakePlayServices.Instance.IsInitialized)

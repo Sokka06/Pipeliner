@@ -13,8 +13,9 @@ namespace Sokka06.Pipeliner
 
         public override IEnumerator Run(Action<IStepResult> result)
         {
-            yield return base.Run(result);
+            yield return null;
             Progress = 1f;
+            result?.Invoke(new IStepResult.Success());
         }
     }
 }

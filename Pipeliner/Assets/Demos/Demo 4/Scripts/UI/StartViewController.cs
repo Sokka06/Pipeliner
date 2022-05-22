@@ -14,12 +14,12 @@ namespace Demos.Demo4
         private void Awake()
         {
             _levelController = FindObjectOfType<LevelController>();
-            _levelController.State.OnStateChanged += OnLevelStateChanged;
+            _levelController.State.onStateChanged += OnLevelStateChanged;
         }
 
         private void OnDestroy()
         {
-            _levelController.State.OnStateChanged -= OnLevelStateChanged;
+            _levelController.State.onStateChanged -= OnLevelStateChanged;
         }
 
         private void OnLevelStateChanged((ILevelState previous, ILevelState current) obj)

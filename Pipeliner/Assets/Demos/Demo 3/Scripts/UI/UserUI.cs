@@ -19,12 +19,12 @@ namespace Demos.Demo3
 
         private void Awake()
         {
-            View.State.OnStateChanged += OnViewStateChanged;
+            View.State.onStateChanged += OnViewStateChanged;
         }
 
         private void OnDestroy()
         {
-            View.State.OnStateChanged -= OnViewStateChanged;
+            View.State.onStateChanged -= OnViewStateChanged;
         }
     
         private void OnViewStateChanged((IViewState previous, IViewState current) state)

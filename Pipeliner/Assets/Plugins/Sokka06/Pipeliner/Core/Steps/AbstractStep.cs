@@ -16,14 +16,7 @@ namespace Sokka06.Pipeliner
             Progress = 0f;
         }
 
-        public virtual IEnumerator Run(Action<IStepResult> result)
-        {
-            Progress = 0f;
-            
-            result?.Invoke(new IStepResult.Success());
-            
-            return null;
-        }
+        public abstract IEnumerator Run(Action<IStepResult> result);
 
         public virtual void OnAbort()
         {

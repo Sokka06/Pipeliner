@@ -18,7 +18,7 @@ namespace Sokka06.Pipeliner
     {
         public T CurrentState { get; protected set; }
 
-        public event Action<(T previous, T current)> OnStateChanged;
+        public event Action<(T previous, T current)> onStateChanged;
         
         public StateMachine(T initialState)
         {
@@ -31,7 +31,7 @@ namespace Sokka06.Pipeliner
             CurrentState = state;
             
             if(notify)
-                OnStateChanged?.Invoke((oldState, CurrentState));
+                onStateChanged?.Invoke((oldState, CurrentState));
         }
     }
 }

@@ -16,8 +16,6 @@ namespace Demos.Demo3
 
         public override IEnumerator Run(Action<IStepResult> result)
         {
-            base.Run(result);
-            
             var parameters = (LoadDataStepParameters)Parameters;
 
             // Wait a second, because loading a small file from HDD takes less than one frame.
