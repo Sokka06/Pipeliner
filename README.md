@@ -72,6 +72,7 @@ A demo showing how to use Pipeliner in script to load menus and levels.
 
 ## Assets
 [DoTween](http://dotween.demigiant.com/)
+[Font Awesome](https://fontawesome.com/)
 #### Models
 [Car Kit](https://www.kenney.nl/assets/car-kit)
 [Platformer Kit](https://kenney.nl/assets/platformer-kit)
