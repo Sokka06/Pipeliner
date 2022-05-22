@@ -54,8 +54,8 @@ public class FooStepObject : StepFactoryObject
     }
 }
 ```
-3. Add a **Pipeline Runner** and **Pipeline** gameobjects to your scene and drag **Pipeline** gameobject to the *Pipeline* field in **Runner** gameobject.
-4. Add your custom *FooStepBehaviour* script to the **Pipeline** gameobject.
+3. Add a **Pipeline Runner** and **Pipeline** GameObjects to your scene (can be found in **GameObject/Pipeliner/**) and drag **Pipeline** GameObject to the *Pipeline* field in **Runner** GameObject.
+4. Add your custom *FooStepBehaviour* script to the **Pipeline** GameObject.
 6. Press play!
 
 ## Demos
