@@ -7,8 +7,14 @@ namespace Sokka06.Pipeliner
 {
     public abstract class AbstractStep : IStep
     {
+        private float _progress;
+        
         public IStepParameters Parameters { get; }
-        public float Progress { get; protected set; }
+        public float Progress
+        {
+            get => _progress;
+            protected set => _progress = Mathf.Clamp01(value);
+        }
 
         public AbstractStep(IStepParameters parameters)
         {

@@ -8,34 +8,59 @@ using UnityEngine.TestTools;
 
 public class RunnerTests
 {
-    [Test]
-    public void _01Run()
+    [UnityTest]
+    public IEnumerator _01Run()
     {
-        var runner = Utils.InstantiateRunner();
         var pipeline = InstantiatePipeline();
+        var runner = new PipelineRunner(pipeline.Create());
+        
+        var result = default(IPipelineResult);
+        yield return runner.Run(value => result = value);
+        
+        Debug.Log(runner.Logger);
 
-        runner.Pipeline = pipeline;
-        runner.Run(Assert.IsInstanceOf<IPipelineResult.Success>);
+        Assert.IsInstanceOf<IPipelineResult.Success>(result);
     }
     
-    [Test]
-    public void _02Abort()
+    [UnityTest]
+    public IEnumerator _02Abort()
     {
-        var runner = Utils.InstantiateRunner();
         var pipeline = InstantiatePipeline();
+        var runner = new PipelineRunner(pipeline.Create());
 
-        runner.Pipeline = pipeline;
-        runner.Run(Assert.IsInstanceOf<IPipelineResult.Success>);
-        
-        /*var result = default(IPipelineResult);
+        var result = default(IPipelineResult);
         var e = runner.Run(value => result = value);
         while (e.MoveNext())
         {
             yield return e.Current;
-            runner.Runner.Abort();
+            runner.Abort();
         }
         
-        Assert.IsInstanceOf<IPipelineResult.Aborted>(result);*/
+        Debug.Log(runner.Logger);
+        
+        Assert.IsInstanceOf<IPipelineResult.Aborted>(result);
+    }
+    
+    [UnityTest]
+    public IEnumerator _03AbortOnFail()
+    {
+        var steps = new IStep[]
+        {
+            new BoolStep(new BoolStepParameters{Boolean = true}),
+            new BoolStep(new BoolStepParameters{Boolean = true}),
+            new BoolStep(new BoolStepParameters{Boolean = false}),
+            new BoolStep(new BoolStepParameters{Boolean = true}),
+            new BoolStep(new BoolStepParameters{Boolean = true})
+        };
+        var pipeline = new Pipeline(steps);
+        var runner = new PipelineRunner(pipeline, new PipelineRunnerSettings{AbortOnFail = true});
+
+        var result = default(IPipelineResult);
+        yield return runner.Run(value => result = value);
+
+        Debug.Log(runner.Logger);
+
+        Assert.IsInstanceOf<IPipelineResult.Aborted>(result);
     }
     
     private PipelineBehaviour InstantiatePipeline()

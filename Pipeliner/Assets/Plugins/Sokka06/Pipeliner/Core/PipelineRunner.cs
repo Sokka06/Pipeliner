@@ -29,16 +29,21 @@ namespace Sokka06.Pipeliner
         private float _progress;
         private bool _abortRequested;
         
-        public StateMachine<IPipelineRunnerState> State { get; private set; }
-        public int StepIndex { get; private set; }
-        public Logger Logger { get; private set; }
-        public IPipelineResult Result { get; private set; }
-        
+        /// <summary>
+        /// Total progress.
+        /// </summary>
         public float Progress
         {
             get => _progress;
             private set => _progress = Mathf.Clamp01(value);
         }
+        public StateMachine<IPipelineRunnerState> State { get; private set; }
+        /// <summary>
+        /// Current step index.
+        /// </summary>
+        public int StepIndex { get; private set; }
+        public Logger Logger { get; private set; }
+        public IPipelineResult Result { get; private set; }
 
         public PipelineRunner(IPipeline pipeline, PipelineRunnerSettings settings = default)
         {
@@ -79,8 +84,11 @@ namespace Sokka06.Pipeliner
                     }
                     
                     yield return e.Current;
-                    CalculateTotalProgress();
+                    Progress = CalculateProgress();
                 }
+                
+                if (Settings.AbortOnFail && stepResult is IStepResult.Failed)
+                    Abort();
 
                 Logger.Log($"Finished Step: {currentStep.GetType().Name}, {stepResult.GetType().Name}");
                 
@@ -117,9 +125,9 @@ namespace Sokka06.Pipeliner
         /// <summary>
         /// Calculates total runner progress from all Steps.
         /// </summary>
-        private void CalculateTotalProgress()
+        private float CalculateProgress()
         {
-            Progress = 0f;
+            var progress = 0f;
 
             if (Pipeline.Steps.Length > 0)
             {
@@ -127,9 +135,11 @@ namespace Sokka06.Pipeliner
                 
                 for (int i = 0; i < Pipeline.Steps.Length; i++)
                 {
-                    Progress += Pipeline.Steps[i].Progress * invLength;
+                    progress += Pipeline.Steps[i].Progress * invLength;
                 }
             }
+
+            return progress;
         }
     }
 }

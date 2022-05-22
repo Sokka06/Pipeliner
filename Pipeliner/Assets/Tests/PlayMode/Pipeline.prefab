@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4513008920753219134}
   - component: {fileID: 4513008920753219135}
-  - component: {fileID: 4513008920753219132}
   - component: {fileID: 4513008920753219129}
   m_Layer: 0
   m_Name: Pipeline
@@ -46,21 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Steps:
-  - {fileID: 4513008920753219132}
   - {fileID: 4513008920753219129}
---- !u!114 &4513008920753219132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4513008920753219133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8f10d8afae931a49a4195f38d7412ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Pipeline: {fileID: 11400000, guid: 7d5108a5a4635744f9e4182d91a98d95, type: 2}
 --- !u!114 &4513008920753219129
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ namespace Sokka06.Pipeliner
             _steps = steps;
         }
         
-        public T GetStep<T>() where T : AbstractStep
+        public T GetStep<T>() where T : IStep
         {
             for (int i = 0; i < _steps.Length; i++)
             {
@@ -23,10 +23,10 @@ namespace Sokka06.Pipeliner
                     return step;
             }
 
-            return null;
+            return default;
         }
         
-        public int GetSteps<T>(ref T[] steps) where T : AbstractStep
+        public int GetSteps<T>(ref T[] steps) where T : IStep
         {
             var count = 0;
             for (int i = 0; i < _steps.Length; i++)

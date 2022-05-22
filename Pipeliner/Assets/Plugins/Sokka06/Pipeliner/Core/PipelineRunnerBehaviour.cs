@@ -7,6 +7,9 @@ using Object = UnityEngine.Object;
 
 namespace Sokka06.Pipeliner
 {
+    /// <summary>
+    /// Runs a Pipeline from MonoBehaviour or Scriptable Object using Pipeline Runner.
+    /// </summary>
     [AddComponentMenu("Pipeliner/Pipeline Runner")]
     public class PipelineRunnerBehaviour : MonoBehaviour
     {
@@ -52,7 +55,6 @@ namespace Sokka06.Pipeliner
         /// <summary>
         /// Runs Pipeline from GameObject/Scriptable Object.
         /// </summary>
-        /// <param name="pipeline"></param>
         /// <param name="result"></param>
         public virtual void Run(Action<IPipelineResult> result = default)
         {

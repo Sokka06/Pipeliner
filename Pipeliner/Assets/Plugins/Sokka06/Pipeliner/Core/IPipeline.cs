@@ -15,6 +15,9 @@ namespace Sokka06.Pipeliner
             public (IStep step, IStepResult result)[] StepResults { get; }
         }
         
+        /// <summary>
+        /// Pipeline ran successfully.
+        /// </summary>
         public struct Success : IPipelineResult
         {
             public (IStep step, IStepResult result)[] StepResults { get; private set; }
@@ -24,17 +27,10 @@ namespace Sokka06.Pipeliner
                 StepResults = stepResults;
             }
         }
-        
-        public struct Failed : IPipelineResult
-        {
-            public (IStep step, IStepResult result)[] StepResults { get; private set; }
-            
-            public Failed((IStep step, IStepResult result)[] stepResults)
-            {
-                StepResults = stepResults;
-            }
-        }
-        
+
+        /// <summary>
+        /// Pipeline was aborted.
+        /// </summary>
         public struct Aborted : IPipelineResult
         {
             public (IStep step, IStepResult result)[] StepResults { get; private set; }
@@ -47,18 +43,21 @@ namespace Sokka06.Pipeliner
     }
 
     /// <summary>
-    /// A pipeline holds all steps...
+    /// Pipeline is a container for all steps.
     /// </summary>
     public interface IPipeline
     {
+        /// <summary>
+        /// All steps.
+        /// </summary>
         IStep[] Steps { get; }
         
         /// <summary>
-        /// Gets first Step for given type.
+        /// Gets first instance of given Step type.
         /// </summary>
         /// <typeparam name="T">Step type</typeparam>
         /// <returns></returns>
-        T GetStep<T>() where T : AbstractStep;
+        T GetStep<T>() where T : IStep;
         
         /// <summary>
         /// Gets all Steps of given type.
@@ -66,6 +65,6 @@ namespace Sokka06.Pipeliner
         /// <param name="steps">Array that will be filled with matching Steps.</param>
         /// <typeparam name="T">Step type to get.</typeparam>
         /// <returns>Count of found Steps.</returns>
-        int GetSteps<T>(ref T[] steps) where T : AbstractStep;
+        int GetSteps<T>(ref T[] steps) where T : IStep;
     }
 }
