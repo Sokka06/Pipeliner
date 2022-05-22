@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Demos.Demo3
 {
-    public class FirebaseStepFactory : StepFactoryBehaviour
+    public class FirebaseStepBehaviour : StepFactoryBehaviour
     {
         public override IStep[] Create()
         {

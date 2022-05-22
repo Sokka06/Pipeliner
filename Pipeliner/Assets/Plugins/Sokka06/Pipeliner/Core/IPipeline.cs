@@ -8,18 +8,18 @@ namespace Sokka06.Pipeliner
 {
     public interface IPipelineResult
     {
-        List<(IStep step, IStepResult result)> StepResults { get; }
+        (IStep step, IStepResult result)[] StepResults { get; }
 
         public struct Default : IPipelineResult
         {
-            public List<(IStep step, IStepResult result)> StepResults { get; }
+            public (IStep step, IStepResult result)[] StepResults { get; }
         }
         
         public struct Success : IPipelineResult
         {
-            public List<(IStep step, IStepResult result)> StepResults { get; private set; }
+            public (IStep step, IStepResult result)[] StepResults { get; private set; }
 
-            public Success(List<(IStep step, IStepResult result)> stepResults)
+            public Success((IStep step, IStepResult result)[] stepResults)
             {
                 StepResults = stepResults;
             }
@@ -27,9 +27,9 @@ namespace Sokka06.Pipeliner
         
         public struct Failed : IPipelineResult
         {
-            public List<(IStep step, IStepResult result)> StepResults { get; private set; }
+            public (IStep step, IStepResult result)[] StepResults { get; private set; }
             
-            public Failed(List<(IStep step, IStepResult result)> stepResults)
+            public Failed((IStep step, IStepResult result)[] stepResults)
             {
                 StepResults = stepResults;
             }
@@ -37,9 +37,9 @@ namespace Sokka06.Pipeliner
         
         public struct Aborted : IPipelineResult
         {
-            public List<(IStep step, IStepResult result)> StepResults { get; private set; }
+            public (IStep step, IStepResult result)[] StepResults { get; private set; }
             
-            public Aborted(List<(IStep step, IStepResult result)> stepResults)
+            public Aborted((IStep step, IStepResult result)[] stepResults)
             {
                 StepResults = stepResults;
             }

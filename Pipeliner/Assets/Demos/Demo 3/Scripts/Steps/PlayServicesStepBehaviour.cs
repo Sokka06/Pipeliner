@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Demos.Demo3
 {
-    public class PlayServicesStepFactory : StepFactoryBehaviour
+    public class PlayServicesStepBehaviour : StepFactoryBehaviour
     {
         public override IStep[] Create()
         {

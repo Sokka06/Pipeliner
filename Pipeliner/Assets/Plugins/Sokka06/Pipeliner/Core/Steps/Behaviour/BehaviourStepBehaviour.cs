@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Sokka06.Pipeliner
 {
     /// <summary>
-    /// Runs a Step from given Behaviour.
+    /// Runs a Step from given Step Behaviour.
     /// </summary>
     [AddComponentMenu(MENU_PATH + "Behaviour Step")]
     public class BehaviourStepBehaviour : StepFactoryBehaviour

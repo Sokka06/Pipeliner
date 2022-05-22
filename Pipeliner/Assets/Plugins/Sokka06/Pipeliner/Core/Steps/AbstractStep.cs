@@ -18,9 +18,6 @@ namespace Sokka06.Pipeliner
 
         public abstract IEnumerator Run(Action<IStepResult> result);
 
-        public virtual void OnAbort()
-        {
-            
-        }
+        public virtual void OnAbort() { }
     }
 }

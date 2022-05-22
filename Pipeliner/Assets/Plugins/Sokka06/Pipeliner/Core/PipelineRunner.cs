@@ -56,7 +56,7 @@ namespace Sokka06.Pipeliner
             State.SetState(new IPipelineRunnerState.Running());
             
             var result = new IPipelineResult.Default() as IPipelineResult;
-            var stepResults = new List<(IStep step, IStepResult result)>(Pipeline.Steps.Length);
+            var stepResults = new (IStep step, IStepResult result)[Pipeline.Steps.Length];
             
             Progress = 0f;
             
@@ -84,7 +84,7 @@ namespace Sokka06.Pipeliner
 
                 Logger.Log($"Finished Step: {currentStep.GetType().Name}, {stepResult.GetType().Name}");
                 
-                stepResults.Add((currentStep, stepResult));
+                stepResults[i] = (currentStep, stepResult);
             }
             
             Progress = 1f;

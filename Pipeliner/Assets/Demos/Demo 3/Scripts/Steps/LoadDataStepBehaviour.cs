@@ -13,7 +13,7 @@ namespace Demos.Demo3
         public DataSystem DataSystem;
     }
 
-    public class LoadDataStepFactory : StepFactoryBehaviour
+    public class LoadDataStepBehaviour : StepFactoryBehaviour
     {
         public DataSystem DataSystem;
     
