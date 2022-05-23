@@ -1,7 +1,7 @@
 ![Module Controller](https://repository-images.githubusercontent.com/457441217/fa2ecbbc-d7d5-4a96-93b4-7acb48d20982)
 
 ## What is it?
-Pipeliner helps you execute sequences, such as initializing social services, loading savegames, loading scenes, level generation and more using custom made **Steps**.
+*Pipeliner* helps you execute sequences, such as initializing social services, loading savegames, loading scenes, level generation and more using custom made *Steps*.
 
 ## Getting started
 1. Clone or download repository.
