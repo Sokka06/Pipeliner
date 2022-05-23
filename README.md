@@ -1,4 +1,6 @@
-# Pipeliner
+![Module Controller](https://repository-images.githubusercontent.com/457441217/fa2ecbbc-d7d5-4a96-93b4-7acb48d20982)
+
+## What is it?
 Pipeliner helps you execute sequences, such as initializing social services, loading savegames, loading scenes, level generation and more using custom made **Steps**.
 
 ## Getting started
@@ -54,7 +56,7 @@ public class FooStepObject : StepFactoryObject
     }
 }
 ```
-3. Add a **Pipeline Runner** and **Pipeline** GameObjects to your scene (can be found in **GameObject/Pipeliner/**) and drag **Pipeline** GameObject to the *Pipeline* field in **Runner** GameObject.
+3. Add a **Pipeline Runner** and **Pipeline** GameObjects to your scene (found in **GameObject/Pipeliner**) and drag **Pipeline** GameObject to the *Pipeline* field in **Runner** GameObject.
 4. Add your custom *FooStepBehaviour* script to the **Pipeline** GameObject.
 6. Press play!
 
@@ -63,10 +65,10 @@ public class FooStepObject : StepFactoryObject
 A basic example that prints Debug.Logs using a MonoBehaviour *Pipeline*.
 ### Scriptable Objects
 A slightly more advanced demo that uses Scriptable Object *Pipelines* and *Steps*.
-### Initialization
-A demo showing how to use Pipeliner to initialize services and save data.
+### Custom Steps
+A demo showing how to use *Pipeliner* to initialize services and save data using custom *Steps*.
 ### Scripting
-A demo showing how to use Pipeliner in script to load menus and levels.
+A demo showing how to create and run a pipeline in script to load menus and levels.
 
 ## Notes
 
