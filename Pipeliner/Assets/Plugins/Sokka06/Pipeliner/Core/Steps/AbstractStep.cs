@@ -10,6 +10,7 @@ namespace Sokka06.Pipeliner
         private float _progress;
         
         public IStepParameters Parameters { get; }
+        public IPipeline Pipeline { get; set; }
         public float Progress
         {
             get => _progress;

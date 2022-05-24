@@ -35,6 +35,10 @@ namespace Sokka06.Pipeliner
     {
         IStepParameters Parameters { get; }
         /// <summary>
+        /// Pipeline this step is attached to.
+        /// </summary>
+        IPipeline Pipeline { get; set; }
+        /// <summary>
         /// Step progress.
         /// </summary>
         float Progress { get; }

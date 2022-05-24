@@ -13,9 +13,13 @@ namespace Sokka06.Pipeliner
         public Pipeline(IStep[] steps)
         {
             _steps = steps;
+            for (int i = 0; i < _steps.Length; i++)
+            {
+                _steps[i].Pipeline = this;
+            }
         }
         
-        public T GetStep<T>() where T : IStep
+        public virtual T GetStep<T>() where T : IStep
         {
             for (int i = 0; i < _steps.Length; i++)
             {
@@ -26,7 +30,7 @@ namespace Sokka06.Pipeliner
             return default;
         }
         
-        public int GetSteps<T>(ref T[] steps) where T : IStep
+        public virtual int GetSteps<T>(ref T[] steps) where T : IStep
         {
             var count = 0;
             for (int i = 0; i < _steps.Length; i++)
@@ -42,6 +46,22 @@ namespace Sokka06.Pipeliner
             }
             
             return count;
+        }
+
+        public int GetIndex(IStep step)
+        {
+            var index = -1;
+
+            for (int i = 0; i < _steps.Length; i++)
+            {
+                if (_steps[i] != step)
+                    continue;
+                
+                index = i;
+                break;
+            }
+            
+            return index;
         }
     }
 }

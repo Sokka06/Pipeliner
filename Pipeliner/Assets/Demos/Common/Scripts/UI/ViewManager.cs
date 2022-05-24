@@ -49,6 +49,23 @@ public class ViewManager : MonoBehaviour
             RegisterView(entry.View);
         }
     }
+    
+    private void RegisterView(UIView view)
+    {
+        var id = view.Id;
+        if (RegisteredViews.ContainsKey(id))
+            return;
+        
+        RegisteredViews.Add(id, view);
+    }
+
+    public UIView GetView(string identifier)
+    {
+        if (!RegisteredViews.ContainsKey(identifier))
+            return null;
+        
+        return RegisteredViews[identifier];
+    }
 
     [ContextMenu("Find Views")]
     public void FindViews()
@@ -64,24 +81,5 @@ public class ViewManager : MonoBehaviour
                 View = views[i]
             });
         }
-    }
-
-    private void RegisterView(UIView view)
-    {
-        var id = view.Id;
-        if (RegisteredViews.ContainsKey(id))
-            return;
-        
-        RegisteredViews.Add(id, view);
-    }
-
-    public UIView GetView(string identifier)
-    {
-        return RegisteredViews[identifier];
-    }
-
-    public UIView GetView(UIView view)
-    {
-        return GetView(view.Id);
     }
 }

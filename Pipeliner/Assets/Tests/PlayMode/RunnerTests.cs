@@ -11,8 +11,14 @@ public class RunnerTests
     [UnityTest]
     public IEnumerator _01Run()
     {
-        var pipeline = InstantiatePipeline();
-        var runner = new PipelineRunner(pipeline.Create());
+        var steps = new IStep[]
+        {
+            new DebugLogStep(new DebugLogParameters{Message = ""}),
+            new DebugLogStep(new DebugLogParameters{Message = ""}),
+            new DebugLogStep(new DebugLogParameters{Message = ""}),
+        };
+        var pipeline = new Pipeline(steps);
+        var runner = new PipelineRunner(pipeline);
         
         var result = default(IPipelineResult);
         yield return runner.Run(value => result = value);
@@ -25,8 +31,14 @@ public class RunnerTests
     [UnityTest]
     public IEnumerator _02Abort()
     {
-        var pipeline = InstantiatePipeline();
-        var runner = new PipelineRunner(pipeline.Create());
+        var steps = new IStep[]
+        {
+            new DebugLogStep(new DebugLogParameters{Message = ""}),
+            new DebugLogStep(new DebugLogParameters{Message = ""}),
+            new DebugLogStep(new DebugLogParameters{Message = ""}),
+        };
+        var pipeline = new Pipeline(steps);
+        var runner = new PipelineRunner(pipeline);
 
         var result = default(IPipelineResult);
         var e = runner.Run(value => result = value);
@@ -61,11 +73,5 @@ public class RunnerTests
         Debug.Log(runner.Logger);
 
         Assert.IsInstanceOf<IPipelineResult.Aborted>(result);
-    }
-    
-    private PipelineBehaviour InstantiatePipeline()
-    {
-        var prefab = AssetDatabase.LoadAssetAtPath("Assets/Tests/PlayMode/Pipeline.prefab", typeof(PipelineBehaviour)) as PipelineBehaviour;
-        return Object.Instantiate(prefab);
     }
 }

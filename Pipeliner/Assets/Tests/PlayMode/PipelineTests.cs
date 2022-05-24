@@ -58,4 +58,30 @@ public class PipelineTests
             Assert.IsInstanceOf<WaitStep>(waitSteps[i]);
         }
     }
+    
+    [Test]
+    public void _04GetIndex()
+    {
+        var steps = new IStep[]
+        {
+            new WaitStep(default),
+            new DebugLogStep(default),
+            new WaitStep(default),
+            new DebugLogStep(default),
+            new WaitStep(default),
+            new DebugLogStep(default),
+            new WaitStep(default),
+            new DebugLogStep(default),
+            new WaitStep(default),
+            new DebugLogStep(default),
+        };
+        var pipeline = new Pipeline(steps);
+
+        var randomIndex = Random.Range(0, steps.Length);
+        var stepIndex = pipeline.GetIndex(steps[randomIndex]);
+        
+        Debug.Log($"Random Index: {randomIndex}, Actual Index: {stepIndex}");
+
+        Assert.AreEqual(randomIndex, stepIndex);
+    }
 }

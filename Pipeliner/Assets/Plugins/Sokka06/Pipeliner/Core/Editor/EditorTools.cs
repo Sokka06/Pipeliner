@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Sokka06.Pipeliner
 {
-    public static class PipelineTools
+    public static class EditorTools
     {
         [MenuItem("GameObject/Pipeliner/Pipeline Runner", false)]
         static void CreatePipelineRunner(MenuCommand menuCommand)
@@ -17,6 +17,7 @@ namespace Sokka06.Pipeliner
         
             // Ensure it gets reparented if this was a context click (otherwise does nothing)
             GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
+            
             // Register the creation in the undo system
             Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
             Selection.activeObject = go;
@@ -31,6 +32,7 @@ namespace Sokka06.Pipeliner
         
             // Ensure it gets reparented if this was a context click (otherwise does nothing)
             GameObjectUtility.SetParentAndAlign(go, menuCommand.context as GameObject);
+            
             // Register the creation in the undo system
             Undo.RegisterCreatedObjectUndo(go, "Create " + go.name);
             Selection.activeObject = go;

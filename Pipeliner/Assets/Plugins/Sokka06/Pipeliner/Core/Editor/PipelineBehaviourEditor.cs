@@ -82,8 +82,13 @@ namespace Sokka06.Pipeliner
             var container = new VisualElement();
             
             // Add a 8px space between default inspector and custom inspector.
-            var space = new VisualElement();
-            space.style.height = 8;
+            var space = new VisualElement
+            {
+                style =
+                {
+                    height = 8
+                }
+            };
             container.Add(space);
 
             // Add Controls

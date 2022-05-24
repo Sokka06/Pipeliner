@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Demo Info
   m_EditorClassIdentifier: 
   Title: Demo
-  Subtitle: Initialization
+  Subtitle: Custom Steps
   Description: This is an example of how <b>Pipeliner</b> can be used to initialize
-    services, save data, and more on startup.
+    services, save data, and more on startup using custom <b>Steps</b>.
