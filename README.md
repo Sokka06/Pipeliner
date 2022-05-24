@@ -27,13 +27,13 @@ public class FooStep : AbstractStep
 
     public override IEnumerator Run(Action<IStepResult> result)
     {
+        yield return null;
         var parameters = (FooStepParameters)Parameters;
 
         // Your custom logic here
 
         Progress = 1f;
         result?.Invoke(new IStepResult.Success());
-        yield return null;
     }
 }
 ```
@@ -61,14 +61,14 @@ public class FooStepObject : StepFactoryObject
 6. Press play!
 
 ## Demos
-### Basic
-A basic example that prints Debug.Logs using a MonoBehaviour *Pipeline*.
-### Scriptable Objects
-A slightly more advanced demo that uses Scriptable Object *Pipelines* and *Steps*.
-### Custom Steps
-A demo showing how to use *Pipeliner* to initialize services and save data using custom *Steps*.
-### Scripting
-A demo showing how to create and run a pipeline in script to load menus and levels.
+### 1. Basic
+A basic example that prints `Debug.Log`s using a MonoBehaviour *Pipeline*.
+### 2. Scriptable Objects
+A demo that uses Scriptable Object *Pipelines* and *Steps*.
+### 3. Custom Steps
+A demo that shows how to use *Pipeliner* to initialize services and save data using custom *Steps*.
+### 4. Scripting
+A demo that shows how to create and run a *Pipeline* and *Steps* in script to load menus and levels.
 
 ## Notes
 
