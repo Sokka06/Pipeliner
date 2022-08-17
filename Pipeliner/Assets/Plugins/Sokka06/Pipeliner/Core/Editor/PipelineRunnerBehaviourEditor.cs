@@ -47,7 +47,7 @@ namespace Sokka06.Pipeliner
 
         private void OnRunButtonClicked()
         {
-            _pipelineRunner.Run();
+            _pipelineRunner.RunPipeline();
         }
         
         private void OnAbortButtonClicked()
@@ -61,9 +61,11 @@ namespace Sokka06.Pipeliner
         private Foldout _foldout;
         private HelpBox _helpBox;
 
+        private VisualElement _container;
         private Label _stepsLabel;
         private Label _stateLabel;
         private Label _progressLabel;
+        private LogElement _log;
 
         private readonly PipelineRunnerBehaviour _pipelineRunner;
 
@@ -79,31 +81,42 @@ namespace Sokka06.Pipeliner
 
             _helpBox = new HelpBox("", HelpBoxMessageType.Info);
             _foldout.Add(_helpBox);
+
+            _container = new VisualElement();
+            _foldout.Add(_container);
             
             _stepsLabel = new Label("");
-            _foldout.Add(_stepsLabel);
+            _container.Add(_stepsLabel);
 
             _stateLabel = new Label("");
-            _foldout.Add(_stateLabel);
+            _container.Add(_stateLabel);
             
             _progressLabel = new Label("");
-            _foldout.Add(_progressLabel);
+            _container.Add(_progressLabel);
+
+            _log = new LogElement(pipelineRunner);
+            _container.Add(_log);
         }
 
         public void UpdateElement()
         {
+            _log.UpdateElement();
+            
             if (!_foldout.visible)
                 return;
-            
+
             if (_pipelineRunner.Runner == null)
             {
                 _helpBox.text = "Run the pipeline to display useful information here.";
-                _helpBox.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+                _helpBox.style.display = DisplayStyle.Flex;
+                
+                _container.style.display = DisplayStyle.None;
                 return;
             }
             
-            _helpBox.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-            
+            _helpBox.style.display = DisplayStyle.None;
+            _container.style.display = DisplayStyle.Flex;
+
             _stepsLabel.text = $"Step Count: {(_pipelineRunner.Runner.Pipeline.Steps.Length.ToString())}";
             _stateLabel.text = $"State: {(_pipelineRunner.Runner.State.CurrentState.GetType().Name)}";
             _progressLabel.text = $"Progress: {(_pipelineRunner.Runner.Progress.ToString("P"))} ({(_pipelineRunner.Runner.StepIndex + 1).ToString()}/{_pipelineRunner.Runner.Pipeline.Steps.Length})";
@@ -113,6 +126,8 @@ namespace Sokka06.Pipeliner
     public class LogElement : VisualElement
     {
         private Foldout _foldout;
+
+        private VisualElement _container;
         private HelpBox _logBox;
         private Button _clearButton;
 
@@ -128,35 +143,34 @@ namespace Sokka06.Pipeliner
             };
             Add(_foldout);
 
+            _container = new VisualElement();
+            _foldout.Add(_container);
+
             _logBox = new HelpBox
             {
                 messageType = HelpBoxMessageType.None
             };
-            _foldout.Add(_logBox);
+            _container.Add(_logBox);
 
             _clearButton = new Button(OnClearButtonClicked)
             {
                 text = "Clear"
             };
-            _foldout.Add(_clearButton);
+            _container.Add(_clearButton);
         }
 
         public void UpdateElement()
         {
             if (!_foldout.visible)
                 return;
-            
+
             if (_pipelineRunner.Runner == null)
             {
-                var hidden = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-                _logBox.style.display = hidden;
-                _clearButton.style.display = hidden;
+                _container.style.display = DisplayStyle.None;
                 return;
             }
-
-            var visible = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
-            _logBox.style.display = visible;
-            _clearButton.style.display = visible;
+            
+            _container.style.display = DisplayStyle.Flex;
             
             _logBox.text = _pipelineRunner.Runner.Logger.Logs.ToString();
         }
@@ -175,7 +189,6 @@ namespace Sokka06.Pipeliner
 
         private ControlsElement _controlsElement;
         private InfoElement _infoElement;
-        private LogElement _logElement;
         
         public virtual void OnEnable()
         {
@@ -194,7 +207,6 @@ namespace Sokka06.Pipeliner
         {
             _controlsElement?.UpdateElement();
             _infoElement?.UpdateElement();
-            _logElement?.UpdateElement();
         }
         
         public override VisualElement CreateInspectorGUI()
@@ -211,6 +223,7 @@ namespace Sokka06.Pipeliner
         /// <returns></returns>
         private VisualElement CreateDefaultInspector()
         {
+            //TODO: Fix error caused by onGUIHandler when target serialized object is destroyed while inspector is open.
             var container = new IMGUIContainer();
             container.onGUIHandler = () => DrawDefaultInspector();
             
@@ -236,10 +249,7 @@ namespace Sokka06.Pipeliner
             
             // Add Info
             container.Add(CreateInfo());
-            
-            // Add Log
-            container.Add(CreateLog());
-            
+
             return container;
         }
         
@@ -253,12 +263,6 @@ namespace Sokka06.Pipeliner
         {
             _infoElement = new InfoElement(_target);
             return _infoElement;
-        }
-        
-        private VisualElement CreateLog()
-        {
-            _logElement = new LogElement(_target);
-            return _logElement;
         }
     }
 }

@@ -495,8 +495,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a350881d2541594ebb8daf43752a034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pipeline: {fileID: 185027692}
   AutoRun: 0
+  Pipeline: {fileID: 185027692}
   Settings:
     AbortOnFail: 0
 --- !u!4 &1230784232

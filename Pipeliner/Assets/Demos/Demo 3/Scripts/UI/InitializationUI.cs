@@ -32,7 +32,7 @@ namespace Demos.Demo3
             if (state.current is IViewState.Visible)
             {
                 var result = default(IPipelineResult);
-                RunnerBehaviour.Run(value =>
+                RunnerBehaviour.RunPipeline(value =>
                 {
                     result = value;
                     View.Manager.GetView("Finish View").Show();
